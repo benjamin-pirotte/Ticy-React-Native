@@ -17,7 +17,7 @@ interface State {
 
 export default class HelloWorld extends Component<Props, State> {
     static defaultProps = {
-        message: "Press here",
+        message: "Press here !",
         alert: "Hello world!",
     };
 
