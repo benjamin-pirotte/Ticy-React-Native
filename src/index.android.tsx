@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import HelloWorld from "./components/HelloWorld/index";
-
 interface Props {
 
 }
@@ -24,8 +22,6 @@ export default class App extends Component<Props, State> {
                 <Text style={styles.instructions}>
                     Shake or press menu button for dev menu
                 </Text>
-
-                <HelloWorld style={styles.helloworld} max={10} />
             </View>
         );
     }
