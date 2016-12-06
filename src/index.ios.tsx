@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import Main from "./main";
+import Main from "./views/home";
 
 interface Props {
 
