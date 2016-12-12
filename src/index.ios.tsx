@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import Main from "./views/home";
+import Home from "./views/Home";
 
 interface Props {
 
@@ -15,8 +15,7 @@ export default class App extends Component<Props, State> {
     render() {
         return (
             <View>
-                <Main />
-            </View>
-        );
-    }
+                <Home /> 
+            </View> 
+        )}
 }

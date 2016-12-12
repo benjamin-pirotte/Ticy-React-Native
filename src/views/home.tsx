@@ -1,26 +1,72 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, AsyncStorage } from "react-native";
+import UserStore from '../Stores/User'
+import { User } from '../Interfaces/User'
 
 interface Props {
 
 }
 
 interface State {
-
+    user:User,
+    userIsLogged: Boolean
+    isLoading: Boolean
 }
 
-interface User {
-    UserName:String
-    Id:number,
-    Token:String
+function userIsLogged(){
+    UserStore.userIsLogged()
 }
 
-export default class Main extends Component<Props, State> {
+export default class Home extends Component<Props, State> {
+    constructor(props : Props) {
+        super(props)
+        userIsLogged()
+        this.state = {  
+            user: {},
+            userIsLogged: false,
+            isLoading: true    
+        }
+    }
+
+    componentDidMount() {
+        UserStore.addChangeListener(this._onUserChange.bind(this))
+    }
+
+    componentWillUnmount() {
+        UserStore.removeChangeListener(this._onUserChange.bind(this))
+    }
+
+    _onUserChange(){
+        var user:User = UserStore.getUser()   
+        var userIsLogged:Boolean = false
+        if(user.id){
+            userIsLogged = true
+        }
+
+        console.log(user)
+
+        this.setState({  
+            user: user,
+            userIsLogged: userIsLogged,
+            isLoading: false    
+        })
+    }
+
     render() {
+        let text:String
+        if(this.state.isLoading === true){
+            text = 'isLoading'
+        } else if(this.state.userIsLogged  === true) {
+            text = 'isLogged'
+        } else {
+            text = 'isNotLogged'
+        }
+
+
         return (
-            <View>
+            <View> 
                 <Text>
-                    Welcome to React Native
+                    {text}
                 </Text>
             </View>
         )
