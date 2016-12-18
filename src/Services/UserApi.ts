@@ -1,8 +1,22 @@
-import { User, NewUser } from '../Interfaces/User'
+import { User, NewUser, ApiUser } from '../Interfaces/User'
 import { MainConstants } from '../Constants/Main'
 import { Promise } from 'es6-promise'
 
 export default class UserApi {
+    apiAdaptator(apiUser:ApiUser):User {
+        let user = {
+            id: apiUser.id,
+            firstName: apiUser.first_name,
+            lastName: apiUser.last_name,
+            email: apiUser.email,
+            phone: apiUser.phone,
+            birthdate: apiUser.birthdate,
+            createdAt: apiUser.created_at,
+            apiKey: apiUser.api_key
+        }
+        return user
+    }
+
     createUser(user:NewUser):Promise<any> {
         return new Promise(function (resolve, reject) {
             let httpRequest = new XMLHttpRequest()
@@ -43,6 +57,7 @@ export default class UserApi {
         })
     }
     userLogin(email:string, password:string):Promise<any> {
+        let _this = this
         return new Promise(function (resolve, reject) {
             let httpRequest = new XMLHttpRequest()
             let url = MainConstants.apiUrl + '/user/login'
@@ -50,7 +65,8 @@ export default class UserApi {
                 email: email,
                 password: password
             }
-            let dataJson:String = JSON.stringify(data)
+
+            let dataJson:String = 'email=' + email.toLowerCase().trim() + '&password=' + password
             
             httpRequest.open("POST", url, true)
 
@@ -58,12 +74,11 @@ export default class UserApi {
 
             httpRequest.onload = function () {
                 if (this.status >= 200 && this.status < 300) {
-                    resolve(httpRequest.response)
+                    let data = JSON.parse(httpRequest.response)
+                    let user = _this.apiAdaptator(data)
+                    resolve(user)
                 } else {
-                    reject({
-                        status: this.status,
-                        statusText: httpRequest.statusText
-                    })
+                    reject(httpRequest.response)
                 }
             }
 
@@ -117,6 +132,7 @@ export default class UserApi {
         })
     }
     getUser(apiKey:string):Promise<any> {
+        let _this = this
         return new Promise(function (resolve, reject) {
             let httpRequest = new XMLHttpRequest()
             let url = MainConstants.apiUrl + '/user/details'
@@ -128,7 +144,9 @@ export default class UserApi {
             
             httpRequest.onload = function () {
                 if (this.status >= 200 && this.status < 300) {
-                    resolve(JSON.parse(httpRequest.response))
+                    let data = JSON.parse(httpRequest.response)
+                    let user = _this.apiAdaptator(data)
+                    resolve(user)
                 } else {
                     reject(JSON.parse(httpRequest.response))
                 }

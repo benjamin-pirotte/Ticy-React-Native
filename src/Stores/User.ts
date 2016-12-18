@@ -22,7 +22,6 @@ const userApi = new UserApiService()
 
 export class UserStore extends EventEmitter  {
     _user:User = {}
-
     // User handler
     userIsLogged():Promise<String> {
         let _this = this
@@ -47,8 +46,17 @@ export class UserStore extends EventEmitter  {
             })
         })
     }
-    loginUser(name:String, password:String):User {
-        return _user
+    loginUser(email:string, pwd:string):Promise<Object> {
+        return new Promise(function (resolve, reject) {
+             userApi.userLogin(email, pwd).then(function(user:User){
+                 _user = user
+                 AsyncStorage.setItem('USER_API_KEY', user.apiKey)
+                 resolve('success')
+             }, function(response){
+                let errorMessage = JSON.parse(response)
+                reject(errorMessage['message'])
+             })
+        })
     }
     updateUser():User { 
         return _user

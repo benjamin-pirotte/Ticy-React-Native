@@ -3,16 +3,18 @@ import { View, StyleSheet, Text } from "react-native";
 import UserStore from '../Stores/User'
 import { User } from '../Interfaces/User'
 
+import LoginForm from '../Components/User/LoginForm'
+ 
+
 interface Props {
+    hasBeenDisconnected: Boolean
 }
 
 interface State {  
 
 }
 
-
-
-export default class Home extends Component<Props, State> {
+export default class Login extends Component<Props, State> {
     constructor(props : Props) {
         super(props)
     }
@@ -26,7 +28,7 @@ export default class Home extends Component<Props, State> {
     render() {
         return (
             <View> 
-                <Text>Welcome home</Text>
+                <LoginForm />
             </View>
         )
     }
