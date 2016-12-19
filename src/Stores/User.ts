@@ -2,16 +2,22 @@ import { EventEmitter } from 'events'
 import { AsyncStorage } from "react-native";  
 import { Promise } from 'es6-promise'
 
+//Dispatcher
 import AppDispatcher from '../Dispatcher/AppDispatcher'
+
+//Services
 import UserApiService from '../Services/UserApi'
 
+//Constants
 import { UserConstants } from '../Constants/User'
+
+//Interfaces
 import { User } from '../Interfaces/User'
 
 
 interface Payload {
     action: {
-        type: String,
+        type: String
         data?: any
     }
 }
@@ -47,11 +53,13 @@ export class UserStore extends EventEmitter  {
         })
     }
     loginUser(email:string, pwd:string):Promise<Object> {
+        let _this = this
         return new Promise(function (resolve, reject) {
              userApi.userLogin(email, pwd).then(function(user:User){
                  _user = user
                  AsyncStorage.setItem('USER_API_KEY', user.apiKey)
                  resolve('success')
+                 _this.emitChange()
              }, function(response){
                 let errorMessage = JSON.parse(response)
                 reject(errorMessage['message'])
@@ -68,7 +76,10 @@ export class UserStore extends EventEmitter  {
         _user = user
     }
     logOut():void {
+        AsyncStorage.removeItem('USER_API_KEY')
         _user = {}
+
+        this.emitChange()
     }
 
     // Event management

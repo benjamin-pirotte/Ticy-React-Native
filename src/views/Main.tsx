@@ -1,19 +1,29 @@
-import React, { Component } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import UserStore from '../Stores/User'
-import { User } from '../Interfaces/User'
+import React, { Component } from "react"
+import { View, StyleSheet, Text, TouchableHighlight } from "react-native"
 
+// Stores
+import UserStore from '../Stores/User'
+
+// Views
 import Login from './Login'
 import Home from './Home'
+
+//Components
+import LogOut from '../Components/User/LogOut'
+
+// interfaces
+import { User } from '../Interfaces/User'
+
 
 interface Props {
 
 }
 
 interface State {  
-    user:User,
+    user:User
     userIsLogged: Boolean
-    isLoading: Boolean,
+    isLoading: Boolean
+    hasBeenDisconnected: Boolean
 }
 
 function userIsLogged(){
@@ -28,6 +38,7 @@ export default class Main extends Component<Props, State> {
             user: {},
             userIsLogged: false,
             isLoading: true,
+            hasBeenDisconnected: false
         }
     }
 
@@ -40,33 +51,46 @@ export default class Main extends Component<Props, State> {
     }
 
     _onUserChange(){
-        var user:User = UserStore.getUser()   
-        var userIsLogged:Boolean = false
-        if(user.id){
-            userIsLogged = true
-        }
-
         let state = this.state
-        state.user = user,
-        state.userIsLogged = userIsLogged,
+
         state.isLoading = false
+
+        state.user = UserStore.getUser()  
+
+        if(state.user.id) {
+            state.userIsLogged = true
+        } else {
+            state.userIsLogged = false
+            if(this.state.userIsLogged){
+                state.hasBeenDisconnected = true
+            }
+        }
 
         this.setState(state)
     }
 
     render() {
-        
+        console.log(this.state.hasBeenDisconnected)
         let view:any
-        if(this.state.userIsLogged  === true) {
-            return <Home />
+        if(this.state.isLoading  === true) { 
+            view = <Text>Loading</Text>
+        } else if(this.state.userIsLogged  === true) {
+            view = <View>
+                     <LogOut  />
+                     <Home /> 
+                   </View>
         } else {
-            view = <Login hasBeenDisconnected={false} />
+            view = <Login hasBeenDisconnected={this.state.hasBeenDisconnected} />
         }
 
         return (
-            <View> 
+            <View style={mainStyle}> 
                 {view}
             </View>
         )
     }
+}
+
+var mainStyle = {
+    paddingTop: 20
 }

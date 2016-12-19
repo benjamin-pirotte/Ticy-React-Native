@@ -1,22 +1,24 @@
 export interface User {
     id?: Number
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    phone?: string;
-    birthdate?: Date;
-    createdAt?: Date;
+    firstName?: string
+    lastName?: string
+    email?: string
+    phone?: string
+    birthdate?: Date
+    gender?: string
+    createdAt?: Date
     apiKey?: string
 }
 
 export interface ApiUser {
     id?: Number
-    first_name?: string;
-    last_name?: string;
-    email?: string;
-    phone?: string;
-    birthdate?: Date;
-    created_at?: Date;
+    first_name?: string
+    last_name?: string
+    email?: string
+    phone?: string
+    birthdate?: Date
+    gender?: string
+    created_at?: Date
     api_key?: string
 }
 

@@ -1,10 +1,14 @@
-import React, { Component } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import UserStore from '../Stores/User'
-import { User } from '../Interfaces/User'
+import React, { Component } from "react"
+import { View, StyleSheet, Text } from "react-native"
 
+//Stores
+import UserStore from '../Stores/User'
+
+//Components
 import LoginForm from '../Components/User/LoginForm'
  
+//Interfaces
+import { User } from '../Interfaces/User'
 
 interface Props {
     hasBeenDisconnected: Boolean
@@ -26,8 +30,14 @@ export default class Login extends Component<Props, State> {
     }
 
     render() {
+        let hasBeenDisconnectedMessage:any = null
+        if (this.props.hasBeenDisconnected) {
+            hasBeenDisconnectedMessage = <Text>You have been disconnected, please connect again</Text>
+        }
+
         return (
             <View> 
+                {hasBeenDisconnectedMessage}
                 <LoginForm />
             </View>
         )

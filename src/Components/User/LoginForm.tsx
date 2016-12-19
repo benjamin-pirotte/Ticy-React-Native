@@ -1,32 +1,31 @@
 import React, { Component } from "react";
 import { View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage} from "react-native";
+
+//Stores
 import UserStore from '../../Stores/User'
+
+//Interfaces
 import { User } from '../../Interfaces/User'
 
 interface Props {
-    hasBeenDisconnected: Boolean
 }
 
 interface State {  
-    userEmail : string,
-    userPwd : string,
-    error: ''
+    email?: string
+    password?: string
+    error?: string
 }
 
 export default class LoginForm extends Component<Props, State> {
     constructor(props : Props) {
         super(props)
-        this.state = {
-            userEmail : '',
-            userPwd: '',
-            error : ''
-        }
+        this.state = {}
     }
 
     componentDidMount() {
         AsyncStorage.getItem('USER_EMAIL', (err, result) => {
             let state = this.state
-            state.userEmail = result      
+            state.email = result      
             this.setState(state)
         })
     }
@@ -37,13 +36,13 @@ export default class LoginForm extends Component<Props, State> {
     // On change
     _onEmailInputChange(value:string):void{
         let state = this.state
-        state.userEmail = value.toLowerCase().trim()
+        state.email = value.toLowerCase().trim()
         this.setState(state)       
     }
 
     _onPasswordInputChange(value:string):void{
         let state = this.state
-        state.userPwd = value        
+        state.password = value        
         this.setState(state)
     }
 
@@ -52,11 +51,9 @@ export default class LoginForm extends Component<Props, State> {
     _submitLoginForm():void {
         let component = this
 
-        AsyncStorage.setItem('USER_EMAIL', this.state.userEmail)
-        UserStore.loginUser(this.state.userEmail, this.state.userPwd).then(function(response){
-            let state = component.state
-            state.error = 'success login'        
-            component.setState(state)
+        AsyncStorage.setItem('USER_EMAIL', this.state.email)
+        UserStore.loginUser(this.state.email, this.state.password).then(function(response){
+            // Store emit change
         }, function(response){
             let state = component.state
             state.error = response        
@@ -71,13 +68,13 @@ export default class LoginForm extends Component<Props, State> {
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                     onChangeText={(userEmail) => this._onEmailInputChange(userEmail)}
-                    value={this.state.userEmail}
+                    value={this.state.email}
                 />
                 <Text>Password</Text>
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                     onChangeText={(userPwd) => this._onPasswordInputChange(userPwd)}
-                    value={this.state.userPwd}
+                    value={this.state.password}
                     secureTextEntry={true}
                 />
                 <Text>{this.state.error}</Text>
