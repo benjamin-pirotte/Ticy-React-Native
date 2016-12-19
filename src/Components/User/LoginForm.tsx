@@ -50,11 +50,17 @@ export default class LoginForm extends Component<Props, State> {
 
     // On submit
     _submitLoginForm():void {
+        let component = this
+
         AsyncStorage.setItem('USER_EMAIL', this.state.userEmail)
-        UserStore.loginUser(this.state.userEmail, this.state.userPwd).then(function(reponse){
-            console.log(reponse)
+        UserStore.loginUser(this.state.userEmail, this.state.userPwd).then(function(response){
+            let state = component.state
+            state.error = 'success login'        
+            component.setState(state)
         }, function(response){
-            console.log(response)
+            let state = component.state
+            state.error = response        
+            component.setState(state)
         })
     }
 
@@ -74,6 +80,7 @@ export default class LoginForm extends Component<Props, State> {
                     value={this.state.userPwd}
                     secureTextEntry={true}
                 />
+                <Text>{this.state.error}</Text>
                 <TouchableHighlight onPress={this._submitLoginForm.bind(this)}>
                     <Text>Log in</Text>
                 </TouchableHighlight>
