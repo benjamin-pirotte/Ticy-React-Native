@@ -70,7 +70,6 @@ export default class Main extends Component<Props, State> {
     }
 
     render() {
-        console.log(this.state.hasBeenDisconnected)
         let view:any
         if(this.state.isLoading  === true) { 
             view = <Text>Loading</Text>

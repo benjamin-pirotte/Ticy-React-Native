@@ -1,6 +1,8 @@
 import { User, NewUser, ApiUser } from '../Interfaces/User'
-import { MainConstants } from '../Constants/Main'
 import { Promise } from 'es6-promise'
+
+//Constants
+import { APIUser } from '../Constants/User'
 
 export default class UserApi {
     apiAdaptator(apiUser:ApiUser):User {
@@ -17,23 +19,26 @@ export default class UserApi {
         return user
     }
 
-    createUser(user:NewUser):Promise<any> {
+    createUser(user:NewUser):Promise<User> {
         return new Promise(function (resolve, reject) {
             let httpRequest = new XMLHttpRequest()
-            let url = MainConstants.apiUrl + '/user/register'
+
             let data = {
                 first_name: user.firstName,
                 last_name: user.lastName,
                 email: user.email,
                 password: user.password,
                 phone: user.phone,
-                birthdate: user.birthdate
+                birthdate: user.birthdate,
+                gender: user.gender
             }
+
             let dataJson:String = JSON.stringify(data)
             
-            httpRequest.open("POST", url, true)
+            httpRequest.open("POST", APIUser.register, true)
 
-            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+            httpRequest.setRequestHeader("Content-type", "application/json")
+            
 
             httpRequest.onload = function () {
                 if (this.status >= 200 && this.status < 300) {
@@ -60,17 +65,18 @@ export default class UserApi {
         let _this = this
         return new Promise(function (resolve, reject) {
             let httpRequest = new XMLHttpRequest()
-            let url = MainConstants.apiUrl + '/user/login'
             let data = {
                 email: email,
                 password: password
             }
 
-            let dataJson:String = 'email=' + email.toLowerCase().trim() + '&password=' + password
-            
-            httpRequest.open("POST", url, true)
+            let dataJson:String = JSON.stringify(data)
 
-            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+            console.log(dataJson)
+            
+            httpRequest.open("POST", APIUser.login, true)
+
+            httpRequest.setRequestHeader("Content-type", "application/json")
 
             httpRequest.onload = function () {
                 if (this.status >= 200 && this.status < 300) {
@@ -95,7 +101,6 @@ export default class UserApi {
     editUser(apiKey:string, user:User):Promise<any> {
         return new Promise(function (resolve, reject) {
             let httpRequest = new XMLHttpRequest()
-            let url = MainConstants.apiUrl + '/user/edit'
             let data = {
                 first_name: user.firstName,
                 last_name: user.lastName,
@@ -105,7 +110,7 @@ export default class UserApi {
             }
             let dataJson:String = JSON.stringify(data)
             
-            httpRequest.open("PUT", url, true)
+            httpRequest.open("PUT", APIUser.edit, true)
 
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.setRequestHeader("Authorization", apiKey)
@@ -135,9 +140,8 @@ export default class UserApi {
         let _this = this
         return new Promise(function (resolve, reject) {
             let httpRequest = new XMLHttpRequest()
-            let url = MainConstants.apiUrl + '/user/details'
             
-            httpRequest.open("POST", url, true)
+            httpRequest.open("POST", APIUser.details, true)
 
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.setRequestHeader("Authorization", apiKey)
@@ -164,14 +168,13 @@ export default class UserApi {
     updatePassword(apiKey:string, password:string, password_copy:string):Promise<any> {
         return new Promise(function (resolve, reject) {
             let httpRequest = new XMLHttpRequest()
-            let url = MainConstants.apiUrl + '/user/edit'
             let data = {
                 password: password,
                 password_copy: password_copy
             }
             let dataJson:String = JSON.stringify(data)
             
-            httpRequest.open("PUT", url, true)
+            httpRequest.open("PUT", APIUser.updatePassword, true)
 
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.setRequestHeader("Authorization", apiKey)

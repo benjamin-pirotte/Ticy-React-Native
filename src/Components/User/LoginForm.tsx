@@ -48,7 +48,7 @@ export default class LoginForm extends Component<Props, State> {
 
 
     // On submit
-    _submitLoginForm():void {
+    _submitForm():void {
         let component = this
 
         AsyncStorage.setItem('USER_EMAIL', this.state.email)
@@ -67,18 +67,18 @@ export default class LoginForm extends Component<Props, State> {
                 <Text>Email</Text>
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                    onChangeText={(userEmail) => this._onEmailInputChange(userEmail)}
+                    onChangeText={(email) => this._onEmailInputChange(email)}
                     value={this.state.email}
                 />
                 <Text>Password</Text>
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                    onChangeText={(userPwd) => this._onPasswordInputChange(userPwd)}
+                    onChangeText={(password) => this._onPasswordInputChange(password)}
                     value={this.state.password}
                     secureTextEntry={true}
                 />
                 <Text>{this.state.error}</Text>
-                <TouchableHighlight onPress={this._submitLoginForm.bind(this)}>
+                <TouchableHighlight onPress={this._submitForm.bind(this)}>
                     <Text>Log in</Text>
                 </TouchableHighlight>
 

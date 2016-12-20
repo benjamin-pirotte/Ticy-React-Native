@@ -12,7 +12,7 @@ import UserApiService from '../Services/UserApi'
 import { UserConstants } from '../Constants/User'
 
 //Interfaces
-import { User } from '../Interfaces/User'
+import { User, NewUser } from '../Interfaces/User'
 
 
 interface Payload {
@@ -52,10 +52,10 @@ export class UserStore extends EventEmitter  {
             })
         })
     }
-    loginUser(email:string, pwd:string):Promise<Object> {
+    loginUser(email:string, password:string, ):Promise<Object> {
         let _this = this
         return new Promise(function (resolve, reject) {
-             userApi.userLogin(email, pwd).then(function(user:User){
+             userApi.userLogin(email, password).then(function(user:User){
                  _user = user
                  AsyncStorage.setItem('USER_API_KEY', user.apiKey)
                  resolve('success')
@@ -66,8 +66,32 @@ export class UserStore extends EventEmitter  {
              })
         })
     }
-    updateUser():User { 
-        return _user
+    register(user:NewUser):Promise<Object> {
+        let _this = this
+        return new Promise(function (resolve, reject) {
+            userApi.createUser(user).then(function(user:User){
+                 _user = user
+                 AsyncStorage.setItem('USER_API_KEY', user.apiKey)
+                 resolve('success')
+                 _this.emitChange()
+             }, function(response){
+                let errorMessage = JSON.parse(response)
+                reject(errorMessage['message'])
+             })
+        })
+    }
+    updateUser() { 
+        AsyncStorage.getItem('USER_API_KEY', (err, result) => {
+            if(result){
+                userApi.getUser(result).then(function(user:User){
+                    _user = user
+                    this.emitChange()
+                })
+            } else {
+                _user = {}
+                this.emitChange()
+            }
+        })
     }
     getUser():User {
         return _user

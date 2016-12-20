@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Platform, View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage} from "react-native";
+import {View, StyleSheet, TextInput, Text, TouchableHighlight} from "react-native";
 
 //Stores
 import UserStore from '../../Stores/User'
@@ -64,15 +64,62 @@ export default class RegisterForm extends Component<Props, State> {
     }
 
     // On submit
-    _submitRegisterForm():void {
+    _submitForm():void {
         let component = this
-
+        UserStore.register(
+            {
+                email: this.state.email, 
+                password: this.state.password, 
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                birthdate: new Date(),
+                gender: 'M'
+            }
+        )
     }
 
     render() {
+        let datePicker:any
+        
         return (
             <View> 
-                <Text>{Platform.OS}</Text>
+                <Text>Email</Text>
+                <TextInput
+                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                    onChangeText={(email) => this._onEmailInputChange(email)}
+                    value={this.state.email}
+                />
+                <Text>Password</Text>
+                <TextInput
+                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                    onChangeText={(password) => this._onPasswordInputChange(password)}
+                    value={this.state.password}
+                    secureTextEntry={true}
+                />
+                <Text>First name</Text>
+                <TextInput
+                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                    onChangeText={(firstName) => this._onFirstNameInputChange(firstName)}
+                    value={this.state.firstName}
+                    secureTextEntry={true}
+                />
+                <Text>Last name</Text>
+                <TextInput
+                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                    onChangeText={(lastName) => this._onPasswordInputChange(lastName)}
+                    value={this.state.lastName}
+                    secureTextEntry={true}
+                />
+                <Text>Birthdate</Text>
+                
+                
+                <Text>Gender</Text>
+
+                <Text>{this.state.error}</Text>
+
+                <TouchableHighlight onPress={this._submitForm.bind(this)}>
+                    <Text>Log in</Text>
+                </TouchableHighlight>
             </View>
         )
     }
