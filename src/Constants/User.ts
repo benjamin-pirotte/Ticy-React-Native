@@ -5,7 +5,7 @@ export const APIUser = {
     register: MainConstants.apiUrl + '/user/register',
     login: MainConstants.apiUrl + '/user/login',
     edit: MainConstants.apiUrl + '/user/edit',
-    updatePassword: MainConstants.apiUrl + '/user/updatepassword',
+    editPassword: MainConstants.apiUrl + '/user/editpassword',
     details : MainConstants.apiUrl + '/user/details', 
 }
 

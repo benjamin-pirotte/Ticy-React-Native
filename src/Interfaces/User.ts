@@ -5,7 +5,9 @@ export interface User {
     email?: string
     phone?: string
     birthdate?: Date
+    age?: Number
     gender?: string
+    profilePictureUri?: string
     createdAt?: Date
     apiKey?: string
 }
@@ -17,7 +19,9 @@ export interface ApiUser {
     email?: string
     phone?: string
     birthdate?: Date
+    age?: Number
     gender?: string
+    profile_picture_uri?: string
     created_at?: Date
     api_key?: string
 }

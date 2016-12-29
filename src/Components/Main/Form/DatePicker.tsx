@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Platform, View, TextInput, DatePickerAndroid, DatePickerIOS, Modal, StyleSheet} from "react-native";
+import { Platform, View, TextInput, DatePickerAndroid, DatePickerIOS, Modal, StyleSheet, ViewStyle, TouchableHighlight, Text} from "react-native";
 
 
 interface Props {
@@ -13,13 +13,15 @@ interface Props {
 
 interface State {  
     datePickerVisible: boolean,
+    currentOrientation: string
 }
 
 export default class DatePicker extends Component<Props, State> {
     constructor(props : Props) {
         super(props)
         this.state = {
-            datePickerVisible: false
+            datePickerVisible: false,
+            currentOrientation: 'unknown'
         }
     }
 
@@ -33,21 +35,29 @@ export default class DatePicker extends Component<Props, State> {
         this.props.onDateChange(date)
     }
 
-    openDatePicker(){
+    openDatePicker() {
         let state = this.state
         state.datePickerVisible = true
         this.setState(state)
     }
 
-    closeDatePicker(){
-        console.log('test')
+    closeDatePicker() {
+        let state = this.state
+        state.datePickerVisible = false
+        this.setState(state)
     }
 
+    onOrientationchange(event:any) {
+       let state = this.state
+       state.currentOrientation =  event.nativeEvent.orientation
+       this.setState(state)
+    }
+    
     render() {
         let date = this.props.date.getDate() + '/' + this.props.date.getMonth() +  '/' + this.props.date.getFullYear()
         let time = this.props.date.getHours() + ':' + this.props.date.getMinutes()
 
-        let dateTime
+        let dateTime:string
         switch(this.props.mode) {
             case 'time':
                 dateTime = time
@@ -68,14 +78,18 @@ export default class DatePicker extends Component<Props, State> {
                     onFocus={() => this.openDatePicker()}
                 />
                 {Platform.OS && 
-                    <Modal transparent={false} visible={this.state.datePickerVisible}
-                    supportedOrientations={['portrait', 'landscape']} onRequestClose={this.closeDatePicker.bind(this)} onOrientationChange={this.closeDatePicker.bind(this)}>
+                    <Modal transparent={true} visible={this.state.datePickerVisible}
+                    supportedOrientations={['portrait', 'landscape']} onOrientationChange={this.onOrientationchange.bind(this)}>
                         <View style={styles.container}>
                             <View style={styles.innerContainer}>
                                 <DatePickerIOS date={this.props.date} onDateChange={this.onDateChange.bind(this)} maximumDate={this.props.maximumDate}
                                 minimumDate={this.props.minimumDate} mode={this.props.mode}/>
+                                <TouchableHighlight onPress={this.closeDatePicker.bind(this)}>
+                                    <Text>Close</Text>
+                                </TouchableHighlight>
                             </View>
                         </View>
+
                     </Modal>
                 }
             </View>
@@ -83,15 +97,17 @@ export default class DatePicker extends Component<Props, State> {
     }
 } 
 
-var styles = StyleSheet.create({
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent:'center',
+    justifyContent: 'center',
     padding: 20,
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
-  },
+  } as ViewStyle,
   innerContainer: {
     borderRadius: 10,
-    alignItems: 'center',
-  }
+    backgroundColor: 'white', 
+    padding: 20
+  } as ViewStyle
 })

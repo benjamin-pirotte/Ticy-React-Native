@@ -34,7 +34,7 @@ export class UserStore extends EventEmitter  {
         return new Promise(function (resolve, reject) {
             AsyncStorage.getItem('USER_API_KEY', (err, result) => {
                 if(result){
-                    userApi.getUser(result).then(function(user:User){
+                    userApi.getUserDetail(result).then(function(user:User){
                         _user = user
                         _this.emitChange()
                         resolve('isLogged')
@@ -70,7 +70,7 @@ export class UserStore extends EventEmitter  {
         return new Promise(function (resolve, reject) {
             userApi.createUser(user).then(function(user:User){
                  if(!user.id) {
-                     reject('An error occured, try to login with your new account')
+                     reject('An error occured, try to login with your credential')
                      return false
                  } 
                  _user = user
@@ -85,7 +85,7 @@ export class UserStore extends EventEmitter  {
     updateUser() { 
         AsyncStorage.getItem('USER_API_KEY', (err, result) => {
             if(result){
-                userApi.getUser(result).then(function(user:User){
+                userApi.getUserDetail(result).then(function(user:User){
                     _user = user
                     this.emitChange()
                 })
@@ -98,8 +98,25 @@ export class UserStore extends EventEmitter  {
     getUser():User {
         return _user
     }
-    editUser(user:User) {
-        _user = user
+    editUser(user:User):Promise<String> {
+        let _this = this
+        return new Promise(function (resolve, reject) {
+            AsyncStorage.getItem('USER_API_KEY', (err, apiKey) => {
+                if(apiKey) {
+                    userApi.editUser(apiKey, user).then(function(user:User){
+                        _user = user
+                        _this.emitChange()
+                        resolve('UserUpdated')
+                    }, function(result:any){
+                        reject(result)
+                    })
+                } else {
+                    _user = {}
+                    reject('NoApiKey')
+                    _this.emitChange()
+                }
+            })
+        })
     }
     logOut():void {
         AsyncStorage.removeItem('USER_API_KEY')

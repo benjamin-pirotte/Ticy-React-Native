@@ -10,6 +10,7 @@ import Home from './Home'
 
 //Components
 import LogOut from '../Components/User/LogOut'
+import EditForm from '../Components/User/EditForm'
 
 // interfaces
 import { User } from '../Interfaces/User'
@@ -77,6 +78,7 @@ export default class Main extends Component<Props, State> {
             view = <View>
                      <LogOut  />
                      <Home /> 
+                     <EditForm /> 
                    </View>
         } else {
             view = <Login hasBeenDisconnected={this.state.hasBeenDisconnected} />
