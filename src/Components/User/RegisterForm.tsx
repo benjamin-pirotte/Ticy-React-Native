@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import {View, StyleSheet, TextInput, Text, TouchableHighlight} from "react-native";
 
 //Stores
 import UserStore from '../../Stores/User'
+
+//Components
+import {View, StyleSheet, TextInput, Text, Picker, TouchableHighlight} from "react-native";
+import DatePicker from '../Main/Form/DatePicker'
 
 //Interfaces
 import { NewUser } from '../../Interfaces/User'
@@ -17,7 +20,15 @@ interface State extends NewUser {
 export default class RegisterForm extends Component<Props, State> {
     constructor(props : Props) {
         super(props)
-        this.state = {}
+        this.state = {
+            birthdate: new Date(),
+            firstName: 'test',
+            lastName: 'test',
+            password:'test123',
+            email:'test@test.com',
+            gender: 'm',
+            phone: '0493934334'
+        }
     }
 
     componentDidMount() {
@@ -27,37 +38,43 @@ export default class RegisterForm extends Component<Props, State> {
     }
 
     // On change
-    _onEmailInputChange(value:string):void{
+    _onEmailInputChange = (value:string) =>{
         let state = this.state
         state.email = value.toLowerCase().trim()
         this.setState(state)       
     }
 
-    _onPasswordInputChange(value:string):void{
+    _onPasswordInputChange = (value:string) => {
         let state = this.state
         state.password = value        
         this.setState(state)
     }
 
-    _onFirstNameInputChange(value:string):void{
+    _onFirstNameInputChange = (value:string) => {
         let state = this.state
         state.firstName = value
         this.setState(state)       
     }
 
-    _onLastNameInputChange(value:string):void{
+    _onLastNameInputChange = (value:string) => {
         let state = this.state
         state.lastName = value        
         this.setState(state)
     }
 
-    _onBirthdateInputChange(value:Date):void{
+    _onPhoneInputChange = (value:string) => {
         let state = this.state
-        state.birthdate = value
+        state.phone = value        
+        this.setState(state)
+    }
+
+    _onBirthdateInputChange = (date:Date) => {
+        let state = this.state
+        state.birthdate = date
         this.setState(state)       
     }
 
-    _onGenderInputChange(value:string):void{
+    _onGenderInputChange = (value:string) => {
         let state = this.state
         state.gender = value        
         this.setState(state)
@@ -66,16 +83,23 @@ export default class RegisterForm extends Component<Props, State> {
     // On submit
     _submitForm():void {
         let component = this
-        UserStore.register(
-            {
-                email: this.state.email, 
-                password: this.state.password, 
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                birthdate: new Date(),
-                gender: 'M'
-            }
-        )
+        let newUser:NewUser = {
+            email: this.state.email, 
+            password: this.state.password, 
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            birthdate: this.state.birthdate,
+            gender: this.state.gender,
+            phone: this.state.phone
+        }
+        UserStore.register(newUser).then(function(response){
+            // Store emit change
+        }, function(response){
+            let state = component.state
+            state.error = response['message']    
+            component.setState(state)
+        })
+
     }
 
     render() {
@@ -101,24 +125,36 @@ export default class RegisterForm extends Component<Props, State> {
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
                     onChangeText={(firstName) => this._onFirstNameInputChange(firstName)}
                     value={this.state.firstName}
-                    secureTextEntry={true}
                 />
                 <Text>Last name</Text>
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                    onChangeText={(lastName) => this._onPasswordInputChange(lastName)}
+                    onChangeText={(lastName) => this._onLastNameInputChange(lastName)}
                     value={this.state.lastName}
-                    secureTextEntry={true}
                 />
-                <Text>Birthdate</Text>
+                <Text>Phone</Text>
+                <TextInput
+                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                    onChangeText={(phone) => this._onPhoneInputChange(phone)}
+                    value={this.state.phone}
+                />
+                <Text>Birthdate (dd/mm/yyyy)</Text>
+                <DatePicker date={this.state.birthdate} mode={'date'} onDateChange={this._onBirthdateInputChange} />
                 
-                
-                <Text>Gender</Text>
+                <Text style={{width:100}}>Gender</Text>
+
+                <Picker style={{width: 100}}
+                    selectedValue={this.state.gender}
+                    onValueChange={this._onGenderInputChange.bind(this)}>
+                    <Picker.Item label="female" value="w" />
+                    <Picker.Item label="male" value="m" />
+                    <Picker.Item label="other" value="o" />
+                </Picker>
 
                 <Text>{this.state.error}</Text>
 
                 <TouchableHighlight onPress={this._submitForm.bind(this)}>
-                    <Text>Log in</Text>
+                    <Text>Register</Text>
                 </TouchableHighlight>
             </View>
         )

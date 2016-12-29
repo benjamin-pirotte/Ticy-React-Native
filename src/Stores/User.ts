@@ -61,8 +61,7 @@ export class UserStore extends EventEmitter  {
                  resolve('success')
                  _this.emitChange()
              }, function(response){
-                let errorMessage = JSON.parse(response)
-                reject(errorMessage['message'])
+                reject(response)
              })
         })
     }
@@ -70,13 +69,16 @@ export class UserStore extends EventEmitter  {
         let _this = this
         return new Promise(function (resolve, reject) {
             userApi.createUser(user).then(function(user:User){
+                 if(!user.id) {
+                     reject('An error occured, try to login with your new account')
+                     return false
+                 } 
                  _user = user
                  AsyncStorage.setItem('USER_API_KEY', user.apiKey)
                  resolve('success')
                  _this.emitChange()
              }, function(response){
-                let errorMessage = JSON.parse(response)
-                reject(errorMessage['message'])
+                reject(response)
              })
         })
     }

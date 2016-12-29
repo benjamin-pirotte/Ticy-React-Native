@@ -34,13 +34,13 @@ export default class LoginForm extends Component<Props, State> {
     }
 
     // On change
-    _onEmailInputChange(value:string):void{
+    _onEmailInputChange = (value:string) => {
         let state = this.state
         state.email = value.toLowerCase().trim()
         this.setState(state)       
     }
 
-    _onPasswordInputChange(value:string):void{
+    _onPasswordInputChange = (value:string) => {
         let state = this.state
         state.password = value        
         this.setState(state)
@@ -56,7 +56,7 @@ export default class LoginForm extends Component<Props, State> {
             // Store emit change
         }, function(response){
             let state = component.state
-            state.error = response        
+            state.error = response['message']        
             component.setState(state)
         })
     }
