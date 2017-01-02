@@ -22,8 +22,7 @@ export default class UserApi {
     }
 
     createUser(user:NewUser):Promise<User> {
-        let _this = this
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             let httpRequest = new XMLHttpRequest()
 
             let data = {
@@ -41,10 +40,10 @@ export default class UserApi {
             httpRequest.setRequestHeader("Content-type", "application/json")
             
 
-            httpRequest.onload = function () {
+            httpRequest.onload = () => {
                 if (httpRequest.status >= 200 && httpRequest.status < 300) {
                     let data = JSON.parse(httpRequest.response)
-                    let user = _this.apiAdaptator(data)
+                    let user = this.apiAdaptator(data)
                     resolve(user)
                 } else {
                     let response = JSON.parse(httpRequest.response)
@@ -53,7 +52,7 @@ export default class UserApi {
                 }
             }
 
-            httpRequest.onerror = function () {
+            httpRequest.onerror = () => {
                 let response = JSON.parse(httpRequest.response)
                 response.status = httpRequest.status
                 reject(response)
@@ -64,8 +63,7 @@ export default class UserApi {
     }
 
     userLogin(email:string, password:string):Promise<any> {
-        let _this = this
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             let httpRequest = new XMLHttpRequest()
             let data = {
                 email: email,
@@ -78,10 +76,10 @@ export default class UserApi {
 
             httpRequest.setRequestHeader("Content-type", "application/json")
 
-            httpRequest.onload = function () {
+            httpRequest.onload = () => {
                 if (httpRequest.status >= 200 && httpRequest.status < 300) {
                     let data = JSON.parse(httpRequest.response)
-                    let user = _this.apiAdaptator(data)
+                    let user = this.apiAdaptator(data)
                     resolve(user)
                 } else {
                     let response = JSON.parse(httpRequest.response)
@@ -90,7 +88,7 @@ export default class UserApi {
                 }
             }
 
-            httpRequest.onerror = function () {
+            httpRequest.onerror = () => {
                 let response = JSON.parse(httpRequest.response)
                 response.status = httpRequest.status
                 reject(response)
@@ -101,8 +99,7 @@ export default class UserApi {
     }
 
     getUserDetail(apiKey:string):Promise<any> {
-        let _this = this
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             let httpRequest = new XMLHttpRequest()
             
             httpRequest.open("POST", APIUser.details, true)
@@ -110,10 +107,10 @@ export default class UserApi {
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.setRequestHeader("Authorization", apiKey)
             
-            httpRequest.onload = function () {
+            httpRequest.onload = () => {
                 if (httpRequest.status >= 200 && httpRequest.status < 300) {
                     let data = JSON.parse(httpRequest.response)
-                    let user = _this.apiAdaptator(data)
+                    let user = this.apiAdaptator(data)
                     resolve(user)
                 } else {
                     let response = JSON.parse(httpRequest.response)
@@ -122,7 +119,7 @@ export default class UserApi {
                 }
             }
 
-            httpRequest.onerror = function () {
+            httpRequest.onerror = () => {
                 let response = JSON.parse(httpRequest.response)
                 response.status = httpRequest.status
                 reject(response)
@@ -133,8 +130,7 @@ export default class UserApi {
     }
 
     editUser(apiKey:string, user:User):Promise<any> {
-        let _this = this
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             let httpRequest = new XMLHttpRequest()
             let data = {
                 first_name: user.firstName,
@@ -150,10 +146,10 @@ export default class UserApi {
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.setRequestHeader("Authorization", apiKey)
 
-            httpRequest.onload = function () {
+            httpRequest.onload = () => {
                 if (httpRequest.status >= 200 && httpRequest.status < 300) {
                     let data = JSON.parse(httpRequest.response)
-                    let user = _this.apiAdaptator(data)
+                    let user = this.apiAdaptator(data)
                     resolve(user)
                 } else {
                     let response = JSON.parse(httpRequest.response)
@@ -162,7 +158,7 @@ export default class UserApi {
                 }
             }
 
-            httpRequest.onerror = function () {
+            httpRequest.onerror = () => {
                 reject({
                     status: httpRequest.status,
                     statusText: httpRequest.statusText
@@ -174,7 +170,7 @@ export default class UserApi {
     }
 
     editPassword(apiKey:string, password:string, password_copy:string):Promise<any> {
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             let httpRequest = new XMLHttpRequest()
             let data = {
                 password: password,
@@ -187,7 +183,7 @@ export default class UserApi {
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.setRequestHeader("Authorization", apiKey)
 
-            httpRequest.onload = function () {
+            httpRequest.onload = () => {
                 if (httpRequest.status >= 200 && httpRequest.status < 300) {
                     resolve(httpRequest.response)
                 } else {
@@ -197,7 +193,7 @@ export default class UserApi {
                 }
             }
 
-            httpRequest.onerror = function () {
+            httpRequest.onerror = () => {
                 let response = JSON.parse(httpRequest.response)
                 response.status = httpRequest.status
                 reject(response)

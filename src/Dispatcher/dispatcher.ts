@@ -14,16 +14,16 @@ export default class Dispatcher {
     var rejects:Array<any> = []
 
     this.promises = this.callbacks.map(function(_, i) {
-      return new Promise(function(resolve, reject){
+      return new Promise((resolve, reject) => {
         resolves[i] = resolve
         rejects[i] = reject
       })
     })
 
     this.callbacks.forEach(function(callback, i) {
-      Promise.resolve(callback(payload)).then(function() {
+      Promise.resolve(callback(payload)).then(() => {
         resolves[i](payload)
-      }, function() {
+      }, () => {
         rejects[i](new Error('Dispatcher callback unsuccessful'))
       })
     })

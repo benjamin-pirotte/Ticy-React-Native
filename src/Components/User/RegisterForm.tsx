@@ -72,12 +72,12 @@ export default class RegisterForm extends Component<Props, State> {
             lastName: this.state.lastName,
             age: this.state.age
         }
-        UserStore.register(newUser).then(function(response){
+        UserStore.register(newUser).then((response) => {
             // Store emit change
             let state = component.state
             state.error = 'User has been created'  
             component.setState(state)
-        }, function(response){
+        },  (response) => {
             let state = component.state
             state.error = response['message']    
             component.setState(state)

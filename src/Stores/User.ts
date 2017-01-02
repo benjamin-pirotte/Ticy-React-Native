@@ -30,45 +30,42 @@ export class UserStore extends EventEmitter  {
     _user:User = {}
     // User handler
     userIsLogged():Promise<String> {
-        let _this = this
-        return new Promise(function (resolve, reject) {
+        return new Promise( (resolve, reject) => {
             AsyncStorage.getItem('USER_API_KEY', (err, result) => {
                 if(result){
-                    userApi.getUserDetail(result).then(function(user:User){
+                    userApi.getUserDetail(result).then((user:User) => {
                         _user = user
-                        _this.emitChange()
+                        this.emitChange()
                         resolve('isLogged')
-                    }, function(result:any){
+                    }, (result:any) => {
                         _user = {}
-                        _this.emitChange()
+                        this.emitChange()
                         reject('credentialsNotValid')
                     })
                 }else {
                     _user = {}
                     reject('noCredentials')
 
-                    _this.emitChange()
+                    this.emitChange()
                 }
             })
         })
     }
     loginUser(email:string, password:string, ):Promise<Object> {
-        let _this = this
-        return new Promise(function (resolve, reject) {
-             userApi.userLogin(email, password).then(function(user:User){
+        return new Promise((resolve, reject) => {
+             userApi.userLogin(email, password).then((user:User) => {
                  _user = user
                  AsyncStorage.setItem('USER_API_KEY', user.apiKey)
                  resolve('success')
-                 _this.emitChange()
-             }, function(response){
+                 this.emitChange()
+             }, (response) => {
                 reject(response)
              })
         })
     }
     register(user:NewUser):Promise<Object> {
-        let _this = this
-        return new Promise(function (resolve, reject) {
-            userApi.createUser(user).then(function(user:User){
+        return new Promise((resolve, reject) => {
+            userApi.createUser(user).then((user:User) => {
                  if(!user.id) {
                      reject('An error occured, try to login with your credential')
                      return false
@@ -76,8 +73,8 @@ export class UserStore extends EventEmitter  {
                  _user = user
                  AsyncStorage.setItem('USER_API_KEY', user.apiKey)
                  resolve('success')
-                 _this.emitChange()
-             }, function(response){
+                 this.emitChange()
+             }, (response) => {
                 reject(response)
              })
         })
@@ -85,7 +82,7 @@ export class UserStore extends EventEmitter  {
     updateUser() { 
         AsyncStorage.getItem('USER_API_KEY', (err, result) => {
             if(result){
-                userApi.getUserDetail(result).then(function(user:User){
+                userApi.getUserDetail(result).then((user:User) => {
                     _user = user
                     this.emitChange()
                 })
@@ -99,21 +96,20 @@ export class UserStore extends EventEmitter  {
         return _user
     }
     editUser(user:User):Promise<String> {
-        let _this = this
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             AsyncStorage.getItem('USER_API_KEY', (err, apiKey) => {
                 if(apiKey) {
-                    userApi.editUser(apiKey, user).then(function(user:User){
+                    userApi.editUser(apiKey, user).then((user:User) => {
                         _user = user
-                        _this.emitChange()
+                        this.emitChange()
                         resolve('UserUpdated')
-                    }, function(result:any){
+                    }, (result:any) => {
                         reject(result)
                     })
                 } else {
                     _user = {}
                     reject('NoApiKey')
-                    _this.emitChange()
+                    this.emitChange()
                 }
             })
         })
@@ -136,7 +132,7 @@ export class UserStore extends EventEmitter  {
         this.removeListener(CHANGE_EVENT, callback)
     }
 
-    dispatcherIndex = AppDispatcher.register(function(payload:Payload) {
+    dispatcherIndex = AppDispatcher.register((payload:Payload) => {
             var action = payload.action
             
             switch(action.type) {
@@ -146,7 +142,7 @@ export class UserStore extends EventEmitter  {
                         this.emitChange()
                     break;
                 case UserConstants.ACTION_EDIT:
-                        this.loginUser(action.data)
+                        this.editUser(action.data)
                         this.emitChange()
                     break;
                 case UserConstants.ACTION_LOGOUT:

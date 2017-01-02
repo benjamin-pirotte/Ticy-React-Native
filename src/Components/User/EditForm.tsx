@@ -30,7 +30,7 @@ export default class RegisterForm extends Component<Props, State> {
     }
 
     // On change
-    _onEmailInputChange = (value:string) =>{
+    _onEmailInputChange = (value:string) => {
         let state = this.state
         state.email = value.toLowerCase().trim()
         this.setState(state)  
@@ -65,12 +65,12 @@ export default class RegisterForm extends Component<Props, State> {
             lastName: this.state.lastName,
             age: this.state.age
         }
-        UserStore.editUser(user).then(function(response){
+        UserStore.editUser(user).then((response) => {
             let state = component.state
             state.error = '' 
             component.setState(state)
             // Store emit change
-        }, function(response){
+        }, (response) => {
             let state = component.state
             state.error = response['message']    
             component.setState(state)
