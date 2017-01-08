@@ -4,6 +4,9 @@ import { View, StyleSheet, Text, TouchableHighlight } from "react-native"
 // Stores
 import UserStore from '../Stores/User'
 
+// Actions
+import UserActions from '../Actions/User'
+
 // Views
 import Login from './Login'
 import Home from './Home'
@@ -27,8 +30,8 @@ interface State {
     hasBeenDisconnected: Boolean
 }
 
-function userIsLogged(){
-    UserStore.userIsLogged()
+let userIsLogged = () => {
+    UserActions.update()
 }
 
 export default class Main extends Component<Props, State> {
@@ -43,31 +46,34 @@ export default class Main extends Component<Props, State> {
         }
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         UserStore.addChangeListener(this._onUserChange.bind(this))
     }
 
-    componentWillUnmount() {
+    componentWillUnmount = () => {
         UserStore.removeChangeListener(this._onUserChange.bind(this))
     }
 
-    _onUserChange(){
-        let state = this.state
+    _onUserChange = (event:Event) =>{
+        let isLoading:boolean = false
+        let userIsLogged:boolean = false
+        let user:User = UserStore.getUser()  
+        let hasBeenDisconnected:boolean = false 
 
-        state.isLoading = false
-
-        state.user = UserStore.getUser()  
-
-        if(state.user.id) {
-            state.userIsLogged = true
+        if(user.id) {
+            userIsLogged = true
         } else {
-            state.userIsLogged = false
-            if(this.state.userIsLogged){
-                state.hasBeenDisconnected = true
+            userIsLogged = false
+            if(userIsLogged){
+                hasBeenDisconnected = true
             }
         }
-
-        this.setState(state)
+        this.setState({
+            isLoading: isLoading,
+            userIsLogged: userIsLogged,  
+            user: user,
+            hasBeenDisconnected: hasBeenDisconnected 
+        })
     }
 
     render() {

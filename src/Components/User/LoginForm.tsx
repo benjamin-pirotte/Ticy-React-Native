@@ -4,8 +4,12 @@ import { View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage} fr
 //Stores
 import UserStore from '../../Stores/User'
 
+//Stores
+import UserAction from '../../Actions/User'
+
 //Interfaces
 import { User } from '../../Interfaces/User'
+import { Action } from '../../Interfaces/Dispatcher'
 
 interface Props {
 }
@@ -22,43 +26,41 @@ export default class LoginForm extends Component<Props, State> {
         this.state = {}
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         AsyncStorage.getItem('USER_EMAIL', (err, result) => {
-            let state = this.state
-            state.email = result      
-            this.setState(state)
+            this.setState({
+                email: result.toLowerCase().trim()
+            })   
         })
     }
 
-    componentWillUnmount() {
+    componentWillUnmount = () => {
+        UserStore.removeErrorListener(this._onFormError.bind(this))
     }
 
     // On change
     _onEmailInputChange = (value:string) => {
-        let state = this.state
-        state.email = value.toLowerCase().trim()
-        this.setState(state)       
+        this.setState({
+            email: value.toLowerCase().trim()
+        })       
     }
 
     _onPasswordInputChange = (value:string) => {
-        let state = this.state
-        state.password = value        
-        this.setState(state)
+        this.setState({
+            password: value
+        }) 
     }
 
+    // On form error
+    _onFormError = (action:Action) => {
+        console.log(action.type)
+    }
 
     // On submit
-    _submitForm():void {
-        let component = this
-
+    _submitForm = () => {
+        UserStore.addErrorListener(this._onFormError.bind(this))
         AsyncStorage.setItem('USER_EMAIL', this.state.email)
-        UserStore.loginUser(this.state.email, this.state.password).then(function(response){
-            // Store emit change
-        }, function(response){
-            let state = component.state
-            state.error = response['message']        
-            component.setState(state)
-        })
+        UserAction.login(this.state.email, this.state.password)
     }
 
     render() {

@@ -24,12 +24,6 @@ export default class Login extends Component<Props, State> {
         super(props)
     }
 
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-    }
-
     render() {
         let hasBeenDisconnectedMessage:any = null
         if (this.props.hasBeenDisconnected) {

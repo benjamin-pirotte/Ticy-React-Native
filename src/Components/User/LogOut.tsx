@@ -7,6 +7,8 @@ import UserStore from '../../Stores/User'
 //Interfaces
 import { User } from '../../Interfaces/User'
 
+//Action
+import UserAction from '../../Actions/User'
 
 interface Props {
 }
@@ -20,16 +22,10 @@ export default class LogOut extends Component<Props, State> {
         super(props)
     }
 
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-    }
-
     // On submit
-    _onLogOut():void {
+    _onLogOut = () => {
         let component = this
-        UserStore.logOut()
+        UserAction.logOut()
     }
 
     render() {
