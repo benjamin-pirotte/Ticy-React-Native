@@ -4,12 +4,16 @@ import { View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage} fr
 //Stores
 import UserStore from '../../Stores/User'
 
-//Interfaces
-import { User } from '../../Interfaces/User'
-
 //Action
 import UserAction from '../../Actions/User'
 
+// Services
+import i18n from '../../Services/i18n'
+
+//Interfaces
+import { User } from '../../Interfaces/User'
+
+//Component
 interface Props {
 }
 
@@ -31,8 +35,8 @@ export default class LogOut extends Component<Props, State> {
     render() {
         return (
             <View> 
-                <TouchableHighlight onPress={this._onLogOut.bind(this)}>
-                    <Text>Log out</Text>
+                <TouchableHighlight onPress={() => this._onLogOut()}>
+                    <Text>{i18n.t('USER.LOG_OUT')}</Text>
                 </TouchableHighlight>
 
             </View>

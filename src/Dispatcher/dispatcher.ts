@@ -1,5 +1,3 @@
-import { Promise }  from 'es6-promise';
-
 export default class Dispatcher {
   callbacks:Array<Function> = []
   promises:Array<any> = []

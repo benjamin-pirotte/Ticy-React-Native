@@ -3,42 +3,50 @@ import React, { Component } from "react";
 //Stores
 import UserStore from '../../Stores/User'
 
-//Stores
+//Actions
 import UserAction from '../../Actions/User'
+
+// Services
+import i18n from '../../Services/i18n'
+
+//Constants
+import userConstants from '../../Constants/User'
 
 //Components
 import {View, StyleSheet, TextInput, Text, TouchableHighlight} from "react-native";
 
 //Interfaces
+import { Action } from '../../Interfaces/Dispatcher'
 
 interface Props {
 }
 
 interface State {
     oldPassword?:string
-    newPassword?:string
-    newPasswordCopy?:string
+    password?:string
+    passwordCopy?:string
     error?:string
 }
 
+//Component
 export default class EditPassword extends Component<Props, State> {
     constructor(props : Props) {
         super(props)
         this.state = {
             oldPassword: '',
-            newPassword: '',
-            newPasswordCopy: ''
+            password: '',
+            passwordCopy: ''
         }
     }
 
     componentDidMount = () => {
-        UserStore.addChangeListener(this._onUserChange.bind(this))
-        UserStore.addErrorListener(this._onFormError.bind(this))
+        UserStore.addChangeListener(() => this._onUserChange())
+        UserStore.addErrorListener((action:Action) => this._onFormError(action))
     }
 
     componentWillUnmount = () => {
-        UserStore.removeChangeListener(this._onUserChange.bind(this))
-        UserStore.removeErrorListener(this._onFormError.bind(this))
+        UserStore.removeChangeListener(() => this._onUserChange)
+        UserStore.removeErrorListener(() => this._onFormError)
     }
 
     // On change
@@ -53,42 +61,62 @@ export default class EditPassword extends Component<Props, State> {
 
     _onNewPasswordChange = (value:string) => {
         this.setState({
-            newPassword: value
+            password: value
         })  
     }
 
     _onNewPasswordCopyChange = (value:string) => {
         this.setState({
-            newPasswordCopy: value
+            passwordCopy: value
         })  
     }
 
     // On form error
-    _onFormError = (type:string, message:string) => {
+    _onFormError = (action:Action) => {
+        console.log(action)
+        if(action.type === userConstants._action.ERROR_EDIT_PASSWORD){
+            let errorMessage: string
+            console.log(action.data === userConstants._actionError.NO_CHANGE)
+            switch (action.data) {
+                case userConstants._actionError.NO_CHANGE:
+                    errorMessage = i18n.t('USER.PASSWORDS_ARE_IDENTICALS')
+                    break;
+                case userConstants._actionError.INCORRECT_CREDENTIALS:
+                    errorMessage = i18n.t('USER.CURRENT_PASSWORD_NOT_CORRECT')
+                    break;
+                case userConstants._actionError.PASSWORDS_ARE_NOT_IDENTICAL:
+                    errorMessage = i18n.t('USER.PASSWORDS_ARE_NOT_IDENTICAL')
+                    break;
+                case userConstants._actionError.REQUIRED_FIELDS_ARE_MISSING:
+                    errorMessage = i18n.t('MAIN.REQUIRED_FIELDS_ARE_MISSING')
+                    break;
+                case userConstants._actionError.CANT_RETURN_API_KEY:
+                    errorMessage = i18n.t('MAIN.LOGIN_NEEDED')
+                    break;
+                default:
+                    errorMessage = i18n.t('MAIN.UNKNOWN_ERROR')
+                    break;
+            }
+            console.log(errorMessage)
+            this.setState({
+                error: errorMessage
+            })   
+        }
     }
     
     
     // On submit
     _submitForm = () => {
-        UserStore.addErrorListener(this._onFormError.bind(this))
-
-        if(this.state.newPassword !== this.state.newPasswordCopy){
-            this.setState({
-                error: "The new passwords are not identical"
-            } as State)
-        } else if (this.state.newPassword && this.state.newPassword === this.state.oldPassword) {
-            this.setState({
-                error: "The old and new passwords are identical"
-            } as State)
-        } else {
-            UserAction.editPassword(this.state.oldPassword, this.state.newPassword)
-        }
+        UserAction.editPassword(this.state.oldPassword, this.state.password, this.state.passwordCopy)
+        this.setState({
+            error: ''
+        })   
     }
 
     render() {            
         return ( 
             <View> 
-                <Text>Current password</Text>
+                <Text>{i18n.t('USER.CURRENT_PASSWORD')}</Text>
                 <TextInput
                     keyboardType="email-address"
                     onChangeText={(oldPassword) => this._onPasswordChange(oldPassword)}
@@ -96,23 +124,23 @@ export default class EditPassword extends Component<Props, State> {
                     value={this.state.oldPassword}
                     secureTextEntry={true}
                 />
-                <Text>New password</Text>
+                <Text>{i18n.t('USER.NEW_PASSWORD')}</Text>
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                    onChangeText={(newPassword) => this._onNewPasswordChange(newPassword)}
-                    value={this.state.newPassword}
+                    onChangeText={(password) => this._onNewPasswordChange(password)}
+                    value={this.state.password}
                     secureTextEntry={true}
                 />
-                <Text>One more time</Text>
+                <Text>{i18n.t('USER.ONE_MORE_TIME')}</Text>
                 <TextInput
                     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                    onChangeText={(newPasswordCopy) => this._onNewPasswordCopyChange(newPasswordCopy)}
-                    value={this.state.newPasswordCopy}
+                    onChangeText={(passwordCopy) => this._onNewPasswordCopyChange(passwordCopy)}
+                    value={this.state.passwordCopy}
                     secureTextEntry={true}
                 />
                 <Text>{this.state.error}</Text>
-                <TouchableHighlight onPress={this._submitForm.bind(this)}>
-                    <Text>Update password</Text>
+                <TouchableHighlight onPress={() => this._submitForm()}>
+                    <Text>{i18n.t('USER.UPDATE')}</Text>
                 </TouchableHighlight>
             </View>
         )

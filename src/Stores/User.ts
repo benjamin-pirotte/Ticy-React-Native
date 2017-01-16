@@ -1,17 +1,17 @@
 import { EventEmitter } from 'events'
 import { AsyncStorage } from "react-native";  
-import { Promise } from 'es6-promise'
 
 //Dispatcher
 import AppDispatcher from '../Dispatcher/AppDispatcher'
 
 //Constants
-import { UserConstants } from '../Constants/User'
+import userConstants from '../Constants/User'
 
 //Interfaces
 import { User, NewUser } from '../Interfaces/User'
 import { Action, Payload } from '../Interfaces/Dispatcher'
 
+//Store
 let CHANGE_EVENT = 'user_change';
 let ERROR_EVENT = 'user_error_change';
 let _user:User = {}
@@ -65,43 +65,43 @@ export class UserStore extends EventEmitter  {
     dispatcherIndex = AppDispatcher.register((payload:Payload) => {
             var action = payload.action
             switch(action.type) {
-                case UserConstants._action.LOGIN:
+                case userConstants._action.LOGIN:
                         this.updateUser(action.data)
                         this.emitChange()
                     break; 
-                case UserConstants._action.ERROR_LOGIN:
+                case userConstants._action.ERROR_LOGIN:
                         this.emitError(action)
                     break; 
-                case UserConstants._action.REGISTER:
+                case userConstants._action.REGISTER:
                         this.updateUser(action.data)
                         this.emitChange()
                     break; 
-                case UserConstants._action.ERROR_REGISTER:
+                case userConstants._action.ERROR_REGISTER:
                     this.emitError(action)
                 break; 
-                case UserConstants._action.UPDATE:
+                case userConstants._action.UPDATE:
                         this.updateUser(action.data)
                         this.emitChange()
                     break; 
-                case UserConstants._action.ERROR_UPDATE:
+                case userConstants._action.ERROR_UPDATE:
                         this.updateUser(action)
                         this.emitChange()
                     break; 
-                case UserConstants._action.EDIT:
+                case userConstants._action.EDIT:
                         this.updateUser(action.data)
                         this.emitChange()
                     break;
-                case UserConstants._action.ERROR_EDIT:
+                case userConstants._action.ERROR_EDIT:
                     this.emitError(action)
                 break;
-                case UserConstants._action.EDITPASSWORD:
+                case userConstants._action.EDIT_PASSWORD:
                         this.updateUserApiKey(action.data.apiKey)
                         this.emitChange()
                     break;
-                case UserConstants._action.ERROR_EDITPASSWORD:
+                case userConstants._action.ERROR_EDIT_PASSWORD:
                     this.emitError(action)
                 break;
-                case UserConstants._action.LOGOUT:
+                case userConstants._action.LOGOUT:
                         this.clearUser()
                         this.emitChange()
                     break;

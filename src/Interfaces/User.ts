@@ -28,10 +28,6 @@ export interface ApiUser {
 
 
 export interface NewUser extends User{
-    password?: string
-}
-
-interface Action {
-    type: String
-    data?: any
+    password?: string,
+    passwordCopy?: string
 }

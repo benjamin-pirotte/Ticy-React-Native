@@ -47,11 +47,11 @@ export default class Main extends Component<Props, State> {
     }
 
     componentDidMount = () => {
-        UserStore.addChangeListener(this._onUserChange.bind(this))
+        UserStore.addChangeListener((event:Event) => this._onUserChange(event))
     }
 
     componentWillUnmount = () => {
-        UserStore.removeChangeListener(this._onUserChange.bind(this))
+        UserStore.removeChangeListener(() => this._onUserChange)
     }
 
     _onUserChange = (event:Event) =>{
@@ -99,5 +99,6 @@ export default class Main extends Component<Props, State> {
 }
 
 var mainStyle = {
-    paddingTop: 20
+    paddingTop: 20,
+    flex: 1
 }

@@ -1,12 +1,9 @@
-import { Promise } from 'es6-promise'
-
 //Constants
-import { UserConstants } from '../Constants/User'
+import userConstants from '../Constants/User'
 
 //Interfaces
 import { User, NewUser, ApiUser } from '../Interfaces/User'
-import { HttpError } from '../Interfaces/HttpError'
-
+import { HttpError } from '../Interfaces/Http'
 
 export class UserApi {
     apiAdaptator = (apiUser:ApiUser):User => {
@@ -33,17 +30,17 @@ export class UserApi {
                 last_name: user.lastName,
                 email: user.email,
                 password: user.password,
+                password_copy: user.passwordCopy,
                 age: user.age,
             }
 
             let dataJson:String = JSON.stringify(data)
             
-            httpRequest.open("POST", UserConstants._api.register, true)
+            httpRequest.open("POST", userConstants._api.register, true)
 
             httpRequest.setRequestHeader("Content-type", "application/json")
             
             httpRequest.onload = () => {
-                console.log(httpRequest.response)
                 if (httpRequest.status >= 200 && httpRequest.status < 300) {
                     let data = JSON.parse(httpRequest.response)
                     let user = this.apiAdaptator(data)
@@ -52,16 +49,16 @@ export class UserApi {
                     try {
                         let error:HttpError = JSON.parse(httpRequest.response)
                         error.status = httpRequest.status
-                        reject(error)
+                        reject(error) 
                     } catch (error) {
-                        reject(UserConstants._actionError.SERVER_NOT_ANSWERING)
+                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
                     }
                 }
             }
 
             httpRequest.onerror = () => {
-                let error:HttpError = {
-                    error: true,
+                let error = {
+                    error: true, 
                     status: 0,
                     message: 'Connection error'
                 }
@@ -82,7 +79,7 @@ export class UserApi {
                         
             let dataJson:String = JSON.stringify(data)
             
-            httpRequest.open("POST", UserConstants._api.login, true)
+            httpRequest.open("POST", userConstants._api.login, true)
 
             httpRequest.setRequestHeader("Content-type", "application/json")
 
@@ -97,16 +94,15 @@ export class UserApi {
                         error.status = httpRequest.status
                         reject(error)
                     } catch (error) {
-                        reject(UserConstants._actionError.SERVER_NOT_ANSWERING)
+                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
                     }
                 }
             }
 
             httpRequest.onerror = () => {
                 let error:HttpError = {
-                    error: true,
                     status: 0,
-                    message: 'Connection error'
+                    message: userConstants._actionError.SERVER_NOT_RESPONDING
                 }
                 reject(error)
             }
@@ -119,7 +115,7 @@ export class UserApi {
         return new Promise((resolve, reject) => {
             let httpRequest = new XMLHttpRequest()
             
-            httpRequest.open("POST", UserConstants._api.details, true)
+            httpRequest.open("POST", userConstants._api.details, true)
 
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.setRequestHeader("Authorization", apiKey)
@@ -131,18 +127,17 @@ export class UserApi {
                     resolve(user)
                 } else {
                     try {
-                        let error:HttpError = JSON.parse(httpRequest.response)
+                        let error = JSON.parse(httpRequest.response)
                         error.status = httpRequest.status
                         reject(error)
                     } catch (error) {
-                        reject(UserConstants._actionError.SERVER_NOT_ANSWERING)
+                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
                     }
                 }
             }
 
             httpRequest.onerror = () => {
-                let error:HttpError = {
-                    error: true,
+                let error = {
                     status: 0,
                     message: 'Connection error'
                 }
@@ -165,7 +160,7 @@ export class UserApi {
             }
             let dataJson:String = JSON.stringify(data)
             
-            httpRequest.open("PUT", UserConstants._api.edit, true)
+            httpRequest.open("PUT", userConstants._api.edit, true)
 
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.setRequestHeader("Authorization", apiKey)
@@ -177,18 +172,17 @@ export class UserApi {
                     resolve(user)
                 } else {
                     try {
-                        let error:HttpError = JSON.parse(httpRequest.response)
+                        let error = JSON.parse(httpRequest.response)
                         error.status = httpRequest.status
                         reject(error)
                     } catch (error) {
-                        reject(UserConstants._actionError.SERVER_NOT_ANSWERING)
+                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
                     }
                 }
             }
 
             httpRequest.onerror = () => {
-                let error:HttpError = {
-                    error: true,
+                let error = {
                     status: 0,
                     message: 'Connection error'
                 }
@@ -199,16 +193,17 @@ export class UserApi {
         })
     }
 
-    editPassword = (apiKey:string, password:string, newPassword:string):Promise<any> => {
+    editPassword = (apiKey:string, oldPassword:string, password:string, passwordCopy:string):Promise<any> => {
         return new Promise((resolve, reject) => {
             let httpRequest = new XMLHttpRequest()
             let data = {
-                old_password: password,     
-                new_password: newPassword       
+                old_password: oldPassword,     
+                password: password,
+                password_copy: passwordCopy      
             }
             let dataJson:String = JSON.stringify(data)
             
-            httpRequest.open("PUT", UserConstants._api.editPassword, true)
+            httpRequest.open("PUT", userConstants._api.editPassword, true)
 
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
             httpRequest.setRequestHeader("Authorization", apiKey)
@@ -224,16 +219,15 @@ export class UserApi {
                         error.status = httpRequest.status
                         reject(error)
                     } catch (error) {
-                        reject(UserConstants._actionError.SERVER_NOT_ANSWERING)
+                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
                     }
                 }
             }
 
             httpRequest.onerror = () => {
                 let error:HttpError = {
-                    error: true,
                     status: 0,
-                    message: 'Connection error'
+                    message: userConstants._actionError.SERVER_NOT_RESPONDING
                 }
                 reject(error)
             }

@@ -1,33 +1,28 @@
 // Constants
-import { MainConstants } from './Main'
+import  MainConstants  from './Main'
 
-export const UserConstants = {
+const UserConstants = {
     _action : {
         LOGIN: 'LOGIN',
         REGISTER: 'REGISTER',
         EDIT: 'EDIT',
-        EDITPASSWORD: 'EDIT_PASSWORD',
+        EDIT_PASSWORD: 'EDIT_PASSWORD',
         UPDATE: 'UPDATE',
         LOGOUT: 'LOGOUT',
         ERROR_LOGIN: 'ERROR_LOGIN',
         ERROR_REGISTER: 'ERROR_REGISTER',
         ERROR_EDIT: 'ERROR_EDIT',
-        ERROR_EDITPASSWORD: 'ERROR_EDIT_PASSWORD',
+        ERROR_EDIT_PASSWORD: 'ERROR_EDIT_PASSWORD',
         ERROR_UPDATE: 'ERROR_UPDATE'
     },
-    _actionError : {
-        SERVER_NOT_ANSWERING: 'SERVER_NOT_ANSWERING',
-        NO_API_KEY: 'NO_API_KEY',
-        INVALID_AUTHORIZATION: 'INVALID_AUTHORIZATION',
-        NO_AUTHORIZATION: 'NO_AUTHORIZATION',
+    _actionError : Object.assign({}, MainConstants.apiError, {
         EMAIL_ADDRESS_IS_NOT_VALID: 'EMAIL_ADDRESS_IS_NOT_VALID',
         REQUIRED_FIELDS_ARE_MISSING: 'REQUIRED_FIELDS_ARE_MISSING',
         CANT_RETURN_USER: 'CANT_RETURN_USER',
         EMAIL_ALREADY_TAKEN: 'EMAIL_ALREADY_TAKEN',
-        INCORRECT_CREDENTIALS: 'INCORRECT_CREDENTIALS',
-        NO_CHANGE: 'NO_CHANGE',
-        FAILED_TO_UPDATE: 'FAILED_TO_UPDATE'
-    },
+        CANT_RETURN_API_KEY: 'CANT_RETURN_API_KEY',
+        PASSWORDS_ARE_NOT_IDENTICAL: 'PASSWORDS_ARE_NOT_IDENTICAL'
+    }),
     _api : {
         register: MainConstants.apiUrl + '/user/register',
         login: MainConstants.apiUrl + '/user/login',
@@ -36,3 +31,5 @@ export const UserConstants = {
         details : MainConstants.apiUrl + '/user/details', 
     }
 }
+
+export default UserConstants

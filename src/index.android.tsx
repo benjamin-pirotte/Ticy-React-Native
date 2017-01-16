@@ -14,7 +14,7 @@ interface State {
 export default class App extends Component<Props, State> {
     render() { 
         return (
-            <View>
+            <View style={{flex: 1}}>
                 <Main /> 
             </View>  
         )

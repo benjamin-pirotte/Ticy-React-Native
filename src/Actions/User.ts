@@ -7,37 +7,39 @@ import AppDispatcher from '../Dispatcher/AppDispatcher'
 import UserApi from '../Api/UserApi'
 
 // Constants
-import { UserConstants } from '../Constants/User'
+import userConstants from '../Constants/User'
 
 // Interfaces
 import { User, NewUser } from '../Interfaces/User'
+import { HttpError } from '../Interfaces/Http'
 
+//Actions
 export class UserActions {
   login = (email:string, password:string) => {
     UserApi.userLogin(email, password).then((user:User) => {
       AppDispatcher.handleViewAction({
-        type: UserConstants._action.LOGIN,
+        type: userConstants._action.LOGIN,
         data: user
       })
-    }, (error:any) => {
-      let errorMessage = error['message']
+    }, (error:HttpError) => {
+      let errorMessage = error.message
       AppDispatcher.handleViewAction({
-        type: UserConstants._action.ERROR_LOGIN,
+        type: userConstants._action.ERROR_LOGIN,
         data: errorMessage
       })
-    })
+    }) 
   }
 
   register = (user:NewUser) => {
     UserApi.createUser(user).then((user:User) => {
       AppDispatcher.handleViewAction({
-        type: UserConstants._action.REGISTER,
+        type: userConstants._action.REGISTER,
         data: user
       })
-    }, (error:any) => {
-      let errorMessage = error['message']
+    }, (error:HttpError) => {
+      let errorMessage = error.message
       AppDispatcher.handleViewAction({
-        type: UserConstants._action.ERROR_REGISTER,
+        type: userConstants._action.ERROR_REGISTER,
         data: errorMessage
       })
     })
@@ -48,47 +50,47 @@ export class UserActions {
       if(apiKey) {
           UserApi.editUser(apiKey, user).then((user:User) => {
             AppDispatcher.handleViewAction({
-              type: UserConstants._action.EDIT,
+              type: userConstants._action.EDIT,
               data: user
             })
-          }, (error:any) => {
-            let errorMessage = error['message']
+          }, (error:HttpError) => {
+            let errorMessage = error.message
             AppDispatcher.handleViewAction({
-              type: UserConstants._action.ERROR_REGISTER,
+              type: userConstants._action.ERROR_EDIT,
               data: errorMessage
             })
           })
       } else {
-        let errorMessage = UserConstants._actionError.NO_API_KEY
+        let errorMessage = userConstants._actionError.NO_API_KEY
         AppDispatcher.handleViewAction({
-          type: UserConstants._action.ERROR_REGISTER,
+          type: userConstants._action.ERROR_EDIT,
           message: errorMessage
         })
       }
     })
   }
 
-  editPassword = (oldPassword:string, newPassword:string) => {
+  editPassword = (oldPassword:string, password:string, passwordCopy:string) => {
     AsyncStorage.getItem('USER_API_KEY', (err, apiKey) => {
       if(apiKey) {
-          UserApi.editPassword(apiKey, oldPassword, newPassword).then((apiKey:string) => {
+          UserApi.editPassword(apiKey, oldPassword, password, passwordCopy).then((apiKey:string) => {
             AppDispatcher.handleViewAction({
-              type: UserConstants._action.EDITPASSWORD,
+              type: userConstants._action.EDIT_PASSWORD,
               data: {
                 apiKey: apiKey
               }
             })
-          }, (error:any) => {
-            let errorMessage = error['message']
+          }, (error:HttpError) => {
+            let errorMessage = error.message
             AppDispatcher.handleViewAction({
-              type: UserConstants._action.ERROR_REGISTER,
+              type: userConstants._action.ERROR_EDIT_PASSWORD,
               data: errorMessage
             })
           })
       } else {
-        let errorMessage = UserConstants._actionError.NO_API_KEY
+        let errorMessage = userConstants._actionError.NO_API_KEY
         AppDispatcher.handleViewAction({
-          type: UserConstants._action.ERROR_REGISTER,
+          type: userConstants._action.ERROR_REGISTER,
           data: errorMessage
         })
       }
@@ -98,22 +100,19 @@ export class UserActions {
   update = () => {
     AsyncStorage.getItem('USER_API_KEY', (err, result) => {
       if(result){
-          console.log(result)
           UserApi.getUserDetail(result).then((user:User) => {
-            console.log(user)
             AppDispatcher.handleViewAction({
-              type: UserConstants._action.UPDATE,
+              type: userConstants._action.UPDATE,
               data: user
             })
-          }, (error:any) => {
-            console.log(error)
+          }, (error:HttpError) => {
             AppDispatcher.handleViewAction({
-              type: UserConstants._action.LOGOUT
+              type: userConstants._action.LOGOUT
             })
           })
         } else {
           AppDispatcher.handleViewAction({
-            type: UserConstants._action.LOGOUT
+            type: userConstants._action.LOGOUT
           })
         }
     })
@@ -121,7 +120,7 @@ export class UserActions {
 
   logOut = () => {
     AppDispatcher.handleViewAction({
-      type: UserConstants._action.LOGOUT
+      type: userConstants._action.LOGOUT
     })
   }
 }
