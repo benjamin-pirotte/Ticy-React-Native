@@ -40,8 +40,8 @@ export default class EditPassword extends Component<Props, State> {
     }
 
     componentDidMount = () => {
-        UserStore.addChangeListener(() => this._onUserChange())
-        UserStore.addErrorListener((action:Action) => this._onFormError(action))
+        UserStore.addChangeListener(this._onUserChange)
+        UserStore.addErrorListener(this._onFormError)
     }
 
     componentWillUnmount = () => {

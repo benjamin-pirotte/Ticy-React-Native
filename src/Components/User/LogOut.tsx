@@ -13,7 +13,6 @@ import i18n from '../../Services/i18n'
 //Interfaces
 import { User } from '../../Interfaces/User'
 
-//Component
 interface Props {
 }
 
@@ -21,6 +20,7 @@ interface State {
 
 }
 
+//Component
 export default class LogOut extends Component<Props, State> {
     constructor(props : Props) {
         super(props)

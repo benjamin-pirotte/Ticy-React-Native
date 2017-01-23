@@ -17,7 +17,8 @@
     "events": "^1.1.1",
     "react": "15.4.1",
     "react-native": "0.38.0",
-    "react-native-button": "^1.7.1"
+    "react-native-button": "^1.7.1",
+    "react-native-material-kit": "^0.4.1"
   },
   "jest": {
     "preset": "react-native"

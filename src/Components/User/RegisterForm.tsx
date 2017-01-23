@@ -27,17 +27,18 @@ interface State  {
 export default class RegisterForm extends Component<Props, State> {
     constructor(props : Props) {
         super(props)
+
         this.state = {
             user: {}
         }
     }
-
+    
     componentDidMount = () => {
-        UserStore.addErrorListener(this._onFormError.bind(this))
+        UserStore.addErrorListener(this._onFormError)
     }
 
     componentWillUnmount = () => {
-        UserStore.removeErrorListener(this._onFormError.bind(this))
+        UserStore.removeErrorListener(this._onFormError)
     }
 
     // On change
@@ -97,23 +98,20 @@ export default class RegisterForm extends Component<Props, State> {
             switch (action.data) {
                 case userConstants._actionError.EMAIL_ADDRESS_IS_NOT_VALID:
                     errorMessage = i18n.t('USER.EMAIL_ADDRESS_IS_NOT_VALID')
-                    this.navigator.push({id: 'scene1'})
+                    this.navigator.jumpTo(this.navigatorRoutes[0])
                     break;
                 case userConstants._actionError.EMAIL_ALREADY_TAKEN:
                     errorMessage = i18n.t('USER.EMAIL_ALREADY_TAKEN')
-                    this.navigator.push({id: 'scene1'})
+                    this.navigator.jumpTo(this.navigatorRoutes[0])
                     break;
                 case userConstants._actionError.PASSWORDS_ARE_NOT_IDENTICAL:
                     errorMessage = i18n.t('USER.PASSWORDS_ARE_NOT_IDENTICAL')
-                    this.navigator.push({id: 'scene1'})
+                    this.navigator.jumpTo(this.navigatorRoutes[0])
                     break;
                 case userConstants._actionError.REQUIRED_FIELDS_ARE_MISSING:
                     errorMessage = i18n.t('MAIN.REQUIRED_FIELDS_ARE_MISSING')
-                    this.navigator.push({id: 'scene1'})
+                    this.navigator.jumpTo(this.navigatorRoutes[0])
                     break;
-                case userConstants._actionError.SERVER_NOT_RESPONDING:
-                    errorMessage = i18n.t('MAIN.SERVER_NOT_RESPONDING')
-                    break;   
                 default:
                     errorMessage = i18n.t('MAIN.UNKNOWN_ERROR')
                     break;
@@ -148,7 +146,7 @@ export default class RegisterForm extends Component<Props, State> {
 
     navigatorRenderScene = (route:Route, navigator:Navigator) => {
         switch (route.id) {
-            case 'scene1':
+            case 'credential':
                 return <View>
                             <Text>{i18n.t('USER.EMAIL')}</Text>
                             <TextInput
@@ -172,11 +170,11 @@ export default class RegisterForm extends Component<Props, State> {
                                 secureTextEntry={true}
                             />
                             <Text>{this.state.error}</Text>
-                            <TouchableHighlight onPress={() => this._navigate('scene2')}>
+                            <TouchableHighlight onPress={() => this._navigate(this.navigatorRoutes[1])}>
                                 <Text>{i18n.t('MAIN.NEXT')}</Text>
                             </TouchableHighlight>
                         </View>
-            case 'scene2':
+            case 'personalInfo':
                 return <View>
                             <Text>{i18n.t('USER.FIRST_NAME')}</Text>
                             <TextInput
@@ -198,7 +196,7 @@ export default class RegisterForm extends Component<Props, State> {
                                 value={this.state.user.age ? this.state.user.age.toString() : ''}
                             />
                             <Text>{this.state.error}</Text>
-                            <TouchableHighlight onPress={() => this._navigate('scene1')}>
+                            <TouchableHighlight onPress={() => this._navigate(this.navigatorRoutes[0])}>
                                 <Text>{i18n.t('MAIN.PREV')}</Text>
                             </TouchableHighlight>
                             <TouchableHighlight onPress={() => this._submitForm()}>
@@ -208,10 +206,10 @@ export default class RegisterForm extends Component<Props, State> {
         }
     }  
 
-    _navigate = (scene:string) => {
+    _navigate = (scene:Route) => {
         let isValid = true
-        switch (scene) {
-            case 'scene2':
+        switch (scene.id) {
+            case 'personalInfo':
                 if(!this.state.user.email || !this.state.user.password || !this.state.user.passwordCopy){
                     isValid = false
                     this._onFormError({
@@ -222,19 +220,25 @@ export default class RegisterForm extends Component<Props, State> {
             break;
         }
         if(isValid) {
-            this.navigator.push({id: scene})
+            this.navigator.jumpTo(scene)
             this.setState({
                 error: ''
             })
         }
     } 
 
+    navigatorRoutes: Array<Route> = [
+        {id: 'credential'},
+        {id: 'personalInfo'}
+    ];
+
     render() {
         return (
             <View style={styles.container}> 
                 <View style={{flex:1}}>
                     <Navigator
-                        initialRoute={{id: 'scene1'}}
+                        initialRoute={this.navigatorRoutes[0]}
+                        initialRouteStack={this.navigatorRoutes}
                         renderScene={(route, navigator) => {
                             this.navigator = navigator
                             return this.navigatorRenderScene(route, navigator)

@@ -5,6 +5,12 @@ import userConstants from '../Constants/User'
 import { User, NewUser, ApiUser } from '../Interfaces/User'
 import { HttpError } from '../Interfaces/Http'
 
+let serverNotResponding = () => {
+    return {
+        status: 0,
+        message: userConstants._actionError.SERVER_NOT_RESPONDING
+    }
+}
 export class UserApi {
     apiAdaptator = (apiUser:ApiUser):User => {
         let user:User = {
@@ -51,18 +57,13 @@ export class UserApi {
                         error.status = httpRequest.status
                         reject(error) 
                     } catch (error) {
-                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
+                        reject(serverNotResponding())
                     }
                 }
             }
 
             httpRequest.onerror = () => {
-                let error = {
-                    error: true, 
-                    status: 0,
-                    message: 'Connection error'
-                }
-                reject(error)
+                reject(serverNotResponding())
             }
 
             httpRequest.send(dataJson)
@@ -94,17 +95,13 @@ export class UserApi {
                         error.status = httpRequest.status
                         reject(error)
                     } catch (error) {
-                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
+                        reject(serverNotResponding())
                     }
                 }
             }
 
             httpRequest.onerror = () => {
-                let error:HttpError = {
-                    status: 0,
-                    message: userConstants._actionError.SERVER_NOT_RESPONDING
-                }
-                reject(error)
+                reject(serverNotResponding())
             }
 
             httpRequest.send(dataJson)
@@ -131,17 +128,13 @@ export class UserApi {
                         error.status = httpRequest.status
                         reject(error)
                     } catch (error) {
-                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
+                        reject(serverNotResponding())
                     }
                 }
             }
 
             httpRequest.onerror = () => {
-                let error = {
-                    status: 0,
-                    message: 'Connection error'
-                }
-                reject(error)
+                reject(serverNotResponding())
             }
             
             httpRequest.send()
@@ -176,17 +169,13 @@ export class UserApi {
                         error.status = httpRequest.status
                         reject(error)
                     } catch (error) {
-                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
+                        reject(serverNotResponding())
                     }
                 }
             }
 
             httpRequest.onerror = () => {
-                let error = {
-                    status: 0,
-                    message: 'Connection error'
-                }
-                reject(error)
+                reject(serverNotResponding())
             }
 
             httpRequest.send(dataJson)
@@ -219,17 +208,13 @@ export class UserApi {
                         error.status = httpRequest.status
                         reject(error)
                     } catch (error) {
-                        reject(userConstants._actionError.SERVER_NOT_RESPONDING)
+                        reject(serverNotResponding())
                     }
                 }
             }
 
             httpRequest.onerror = () => {
-                let error:HttpError = {
-                    status: 0,
-                    message: userConstants._actionError.SERVER_NOT_RESPONDING
-                }
-                reject(error)
+                reject(serverNotResponding())
             }
 
             httpRequest.send(dataJson)

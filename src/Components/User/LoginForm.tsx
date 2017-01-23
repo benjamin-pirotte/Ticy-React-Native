@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage, ViewStyle} from "react-native";
+import { View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage, ViewStyle, Route} from "react-native";
 
 //Stores
 import UserStore from '../../Stores/User'
@@ -34,7 +34,7 @@ export default class LoginForm extends Component<Props, State> {
     }
 
     componentDidMount = () => {
-        UserStore.addErrorListener(this._onFormError.bind(this))
+        UserStore.addErrorListener(this._onFormError)
         AsyncStorage.getItem('USER_EMAIL', (err, result) => {
             this.setState({
                 email: result.toLowerCase().trim()
@@ -43,7 +43,7 @@ export default class LoginForm extends Component<Props, State> {
     }
 
     componentWillUnmount = () => {
-        UserStore.removeErrorListener(this._onFormError.bind(this))
+        UserStore.removeErrorListener(this._onFormError)
     }
 
     // On change

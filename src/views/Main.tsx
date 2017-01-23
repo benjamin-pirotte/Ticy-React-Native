@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { View, StyleSheet, Text, TouchableHighlight } from "react-native"
+import { View, StyleSheet, Text, ViewStyle } from "react-native"
 
 // Stores
 import UserStore from '../Stores/User'
@@ -12,8 +12,7 @@ import Login from './Login'
 import Home from './Home'
 
 //Components
-import LogOut from '../Components/User/LogOut'
-import EditForm from '../Components/User/EditForm'
+import Notification from '../Components/Main/Notification'
 
 // interfaces
 import { User } from '../Interfaces/User'
@@ -47,11 +46,11 @@ export default class Main extends Component<Props, State> {
     }
 
     componentDidMount = () => {
-        UserStore.addChangeListener((event:Event) => this._onUserChange(event))
+        UserStore.addChangeListener(this._onUserChange)
     }
 
     componentWillUnmount = () => {
-        UserStore.removeChangeListener(() => this._onUserChange)
+        UserStore.removeChangeListener(this._onUserChange)
     }
 
     _onUserChange = (event:Event) =>{
@@ -81,24 +80,16 @@ export default class Main extends Component<Props, State> {
         if(this.state.isLoading  === true) { 
             view = <Text>Loading</Text>
         } else if(this.state.userIsLogged  === true) {
-            view = <View>
-                     <LogOut  />
-                     <Home /> 
-                     <EditForm /> 
-                   </View>
+            view = <Home />
         } else {
             view = <Login hasBeenDisconnected={this.state.hasBeenDisconnected} />
         }
 
         return (
-            <View style={mainStyle}> 
+            <View style={{flex:1}}> 
                 {view}
+                <Notification />
             </View>
         )
     }
-}
-
-var mainStyle = {
-    paddingTop: 20,
-    flex: 1
 }

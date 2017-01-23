@@ -9,5 +9,6 @@ class AppDispatcher extends Dispatcher {
   }
 }
 
-export default new AppDispatcher()
+export const MainDispatcher = new AppDispatcher()
+export const UserDispatcher = new AppDispatcher()
 

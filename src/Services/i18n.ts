@@ -1,9 +1,6 @@
 import { EventEmitter } from 'events'
 import React, { NativeModules } from 'react-native'
 
-//Dispatcher
-import AppDispatcher from '../Dispatcher/AppDispatcher'
-
 //i18n
 import en_US from '../i18n/en_US'
 

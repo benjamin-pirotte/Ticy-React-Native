@@ -1,7 +1,7 @@
 import { AsyncStorage } from "react-native"; 
 
 // Dispatchers
-import AppDispatcher from '../Dispatcher/AppDispatcher'
+import {UserDispatcher, MainDispatcher} from '../Dispatcher/AppDispatcher'
 
 //Services
 import UserApi from '../Api/UserApi'
@@ -17,13 +17,13 @@ import { HttpError } from '../Interfaces/Http'
 export class UserActions {
   login = (email:string, password:string) => {
     UserApi.userLogin(email, password).then((user:User) => {
-      AppDispatcher.handleViewAction({
+      UserDispatcher.handleViewAction({
         type: userConstants._action.LOGIN,
         data: user
       })
     }, (error:HttpError) => {
       let errorMessage = error.message
-      AppDispatcher.handleViewAction({
+      UserDispatcher.handleViewAction({
         type: userConstants._action.ERROR_LOGIN,
         data: errorMessage
       })
@@ -32,13 +32,13 @@ export class UserActions {
 
   register = (user:NewUser) => {
     UserApi.createUser(user).then((user:User) => {
-      AppDispatcher.handleViewAction({
+      UserDispatcher.handleViewAction({
         type: userConstants._action.REGISTER,
         data: user
       })
     }, (error:HttpError) => {
       let errorMessage = error.message
-      AppDispatcher.handleViewAction({
+      UserDispatcher.handleViewAction({
         type: userConstants._action.ERROR_REGISTER,
         data: errorMessage
       })
@@ -49,20 +49,20 @@ export class UserActions {
     AsyncStorage.getItem('USER_API_KEY', (err, apiKey) => {
       if(apiKey) {
           UserApi.editUser(apiKey, user).then((user:User) => {
-            AppDispatcher.handleViewAction({
+            UserDispatcher.handleViewAction({
               type: userConstants._action.EDIT,
               data: user
             })
           }, (error:HttpError) => {
             let errorMessage = error.message
-            AppDispatcher.handleViewAction({
+            UserDispatcher.handleViewAction({
               type: userConstants._action.ERROR_EDIT,
               data: errorMessage
             })
           })
       } else {
         let errorMessage = userConstants._actionError.NO_API_KEY
-        AppDispatcher.handleViewAction({
+        UserDispatcher.handleViewAction({
           type: userConstants._action.ERROR_EDIT,
           message: errorMessage
         })
@@ -74,7 +74,7 @@ export class UserActions {
     AsyncStorage.getItem('USER_API_KEY', (err, apiKey) => {
       if(apiKey) {
           UserApi.editPassword(apiKey, oldPassword, password, passwordCopy).then((apiKey:string) => {
-            AppDispatcher.handleViewAction({
+            UserDispatcher.handleViewAction({
               type: userConstants._action.EDIT_PASSWORD,
               data: {
                 apiKey: apiKey
@@ -82,14 +82,14 @@ export class UserActions {
             })
           }, (error:HttpError) => {
             let errorMessage = error.message
-            AppDispatcher.handleViewAction({
+            UserDispatcher.handleViewAction({
               type: userConstants._action.ERROR_EDIT_PASSWORD,
               data: errorMessage
             })
           })
       } else {
         let errorMessage = userConstants._actionError.NO_API_KEY
-        AppDispatcher.handleViewAction({
+        UserDispatcher.handleViewAction({
           type: userConstants._action.ERROR_REGISTER,
           data: errorMessage
         })
@@ -101,17 +101,19 @@ export class UserActions {
     AsyncStorage.getItem('USER_API_KEY', (err, result) => {
       if(result){
           UserApi.getUserDetail(result).then((user:User) => {
-            AppDispatcher.handleViewAction({
+            UserDispatcher.handleViewAction({
               type: userConstants._action.UPDATE,
               data: user
             })
           }, (error:HttpError) => {
-            AppDispatcher.handleViewAction({
-              type: userConstants._action.LOGOUT
+            let errorMessage = error.message
+            UserDispatcher.handleViewAction({
+              type: userConstants._action.ERROR_UPDATE,
+              data: errorMessage
             })
           })
         } else {
-          AppDispatcher.handleViewAction({
+          UserDispatcher.handleViewAction({
             type: userConstants._action.LOGOUT
           })
         }
@@ -119,7 +121,7 @@ export class UserActions {
   }
 
   logOut = () => {
-    AppDispatcher.handleViewAction({
+    UserDispatcher.handleViewAction({
       type: userConstants._action.LOGOUT
     })
   }

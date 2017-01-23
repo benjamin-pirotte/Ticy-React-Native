@@ -2,7 +2,7 @@ export default {
     MAIN: {
         CLOSE: `Close`,
         UNKNOWN_ERROR: `An error has occured. Please try again.`,
-        SERVER_NOT_RESPONDING: `The internet connection couldn't etablished. Please try later.`,
+        SERVER_NOT_RESPONDING: `The connection to the server couldn't etablished. Please verify your internet connection and try again.`,
         REQUIRED_FIELDS_ARE_MISSING: `Some required fields are missing. Please try again.`,
         LOGIN_NEEDED: `An error has occured. Please logout and login, before try again.`,
         NEXT: `Next`,
@@ -29,6 +29,7 @@ export default {
         LOG_OUT: `Log out`,
         ARE_YOU_A_NEW_USER: `New here ? Create a new account`,
         ARE_YOU_AN_EXISTING_USER: `Already have an account ? Login`,
-        REGISTER: `Register`
+        REGISTER: `Register`,
+        EDIT: `Edit your profile`
     }
 }

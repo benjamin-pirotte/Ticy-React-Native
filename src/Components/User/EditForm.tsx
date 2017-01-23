@@ -44,13 +44,13 @@ export default class EditForm extends Component<Props, State> {
     }
 
     componentDidMount = () => {
-        UserStore.addChangeListener(() => this._onUserChange())
-        UserStore.addErrorListener((action:Action) => this._onFormError(action))
+        UserStore.addChangeListener(this._onUserChange)
+        UserStore.addErrorListener(this._onFormError)
     }
 
     componentWillUnmount = () => {
-        UserStore.removeChangeListener(() => this._onUserChange)
-        UserStore.addErrorListener(() => this._onFormError)
+        UserStore.removeChangeListener(this._onUserChange)
+        UserStore.addErrorListener(this._onFormError)
     }
     
     
@@ -156,15 +156,15 @@ export default class EditForm extends Component<Props, State> {
 
     // Modal
     _onOrientationchange = (event:any) => {
-       let state = this.state
-       state.currentOrientation =  event.nativeEvent.orientation
-       this.setState(state)
+       this.setState({
+           currentOrientation:  event.nativeEvent.orientation
+        })
     }
 
     _togglePasswordModal = () => {
-        let state = this.state
-        state.editPasswordModal = !state.editPasswordModal
-        this.setState(state)
+        this.setState({
+           editPasswordModal: !this.state.editPasswordModal
+        })
     }
 
     render() {        
@@ -199,7 +199,7 @@ export default class EditForm extends Component<Props, State> {
                 <Text>{this.state.error}</Text>
 
 
-                <TouchableHighlight onPress={() => this._togglePasswordModal}>
+                <TouchableHighlight onPress={() => this._togglePasswordModal()}>
                     <Text>{i18n.t('USER.CHANGE_PASSWORD')}</Text>
                 </TouchableHighlight>
 
@@ -208,7 +208,7 @@ export default class EditForm extends Component<Props, State> {
                     <View style={styles.container}>
                         <View style={styles.innerContainer}>
                             <EditPassword />
-                            <TouchableHighlight onPress={() => this._togglePasswordModal}>
+                            <TouchableHighlight onPress={() => this._togglePasswordModal()}>
                                 <Text>{i18n.t('MAIN.CLOSE')}</Text>
                             </TouchableHighlight>
                         </View>

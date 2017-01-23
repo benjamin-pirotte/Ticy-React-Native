@@ -2,7 +2,7 @@ import { EventEmitter } from 'events'
 import { AsyncStorage } from "react-native";  
 
 //Dispatcher
-import AppDispatcher from '../Dispatcher/AppDispatcher'
+import {UserDispatcher, MainDispatcher} from '../Dispatcher/AppDispatcher'
 
 //Constants
 import userConstants from '../Constants/User'
@@ -34,6 +34,9 @@ export class UserStore extends EventEmitter  {
 
     clearUser = () => {
         _user = {}
+    }
+
+    clearUserApi = () => {
         AsyncStorage.removeItem('USER_API_KEY')
     }
 
@@ -51,6 +54,12 @@ export class UserStore extends EventEmitter  {
     }
 
     emitError = (action?:Action) => {
+        if(action.data === userConstants._actionError.SERVER_NOT_RESPONDING){
+            MainDispatcher.handleViewAction({
+                type: userConstants._actionError.SERVER_NOT_RESPONDING
+            })
+        }
+
         this.emit(ERROR_EVENT, action)
     }
 
@@ -62,7 +71,7 @@ export class UserStore extends EventEmitter  {
         this.removeListener(ERROR_EVENT, callback)
     }
 
-    dispatcherIndex = AppDispatcher.register((payload:Payload) => {
+    dispatcherIndex = UserDispatcher.register((payload:Payload) => {
             var action = payload.action
             switch(action.type) {
                 case userConstants._action.LOGIN:
@@ -84,7 +93,7 @@ export class UserStore extends EventEmitter  {
                         this.emitChange()
                     break; 
                 case userConstants._action.ERROR_UPDATE:
-                        this.updateUser(action)
+                        this.emitError(action)
                         this.emitChange()
                     break; 
                 case userConstants._action.EDIT:
@@ -103,6 +112,7 @@ export class UserStore extends EventEmitter  {
                 break;
                 case userConstants._action.LOGOUT:
                         this.clearUser()
+                        this.clearUserApi()
                         this.emitChange()
                     break;
             }
