@@ -5,14 +5,14 @@ import { AsyncStorage } from "react-native";
 import {UserDispatcher, MainDispatcher} from '../Dispatcher/AppDispatcher'
 
 //Constants
-import userConstants from '../Constants/User'
+import userConstants from '../Constants/User' 
 
 //Interfaces
 import { User, NewUser } from '../Interfaces/User'
 import { Action, Payload } from '../Interfaces/Dispatcher'
 
 //Store
-let CHANGE_EVENT = 'user_change';
+let CHANGE_EVENT = 'user_change'; 
 let ERROR_EVENT = 'user_error_change';
 let _user:User = {}
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import { View, ScrollView, StyleSheet, Text, TouchableHighlight, Navigator, NavigatorStatic, Route } from "react-native"
-import MK from "react-native-material-kit"
 
 //Stores
 import UserStore from '../Stores/User'
@@ -54,10 +53,9 @@ export default class Login extends Component<Props, State> {
             case 'register':
                 return  <View style={{flex:2}}>
                             <RegisterForm/>
-                            <MK.mdl.Slider/>
-                            <MK.MKButton onPress={() => this.navigator.replace(this.navigatorRoutes[0])}>
+                            <TouchableHighlight onPress={() => this.navigator.replace(this.navigatorRoutes[0])}>
                                 <Text>{i18n.t('USER.ARE_YOU_A_NEW_USER')}</Text>
-                            </MK.MKButton>
+                            </TouchableHighlight>
                         </View>
         }
     }   

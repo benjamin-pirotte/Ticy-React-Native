@@ -169,15 +169,25 @@ declare namespace __MK {
     }
 
     //Button
-    interface MKButtonProps extends ReactNative.TouchableWithoutFeedbackProperties, Ripple {
-        backgroundColor?: string
-        shadowRadius?: number
-        shadowOffset?:{width:number, height:number}
-        shadowOpacity?:number
-        shadowColor?:string
+    interface MKButtonProps extends ReactNative.TouchableWithoutFeedbackProperties, Ripple {}
+
+    interface ButtonClass {
+        withText:(text:String) => ButtonClass
+        withStyle: (Style:Object) => ButtonClass
+        withTextStyle: (Style:Object) => ButtonClass
+        build: () => ReactNative.ClassicComponentClass<ReactNative.TouchableWithoutFeedbackProperties>
     }
 
-    interface MKButtonStatic extends React.ClassicComponentClass<MKButtonProps> {}
+    interface MKButtonStatic extends React.ClassicComponentClass<MKButtonProps> {
+        coloredButton: () => ButtonClass
+        accentColoredButton: () => ReactNative.Component<MKButtonProps, {}>
+        flatButton: () => ReactNative.Component<MKButtonProps, {}>
+        coloredFlatButton: () => ReactNative.Component<MKButtonProps, {}>
+        accentColoredFlatButton: () => ReactNative.Component<MKButtonProps, {}>
+        plainFab: () => ReactNative.Component<MKButtonProps, {}>
+        coloredFab: () => ReactNative.Component<MKButtonProps, {}>
+        accentColoredFab: () => ReactNative.Component<MKButtonProps, {}>
+    }
 
     export var MKButton: MKButtonStatic
     export type MKButton = MKButtonStatic

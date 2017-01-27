@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage, ViewStyle, Route} from "react-native";
+import {MKButton} from "react-native-material-kit"
 
 //Stores
 import UserStore from '../../Stores/User'
@@ -36,9 +37,11 @@ export default class LoginForm extends Component<Props, State> {
     componentDidMount = () => {
         UserStore.addErrorListener(this._onFormError)
         AsyncStorage.getItem('USER_EMAIL', (err, result) => {
-            this.setState({
-                email: result.toLowerCase().trim()
-            })   
+            if(result){
+                this.setState({
+                    email: result.toLowerCase().trim()
+                }) 
+            }
         })
     }
 
@@ -82,7 +85,9 @@ export default class LoginForm extends Component<Props, State> {
 
     // On submit
     _submitForm = () => {
-        AsyncStorage.setItem('USER_EMAIL', this.state.email)
+        if(this.state.email){
+            AsyncStorage.setItem('USER_EMAIL', this.state.email)
+        }
         UserAction.login(this.state.email, this.state.password)
 
         this.setState({
@@ -91,6 +96,11 @@ export default class LoginForm extends Component<Props, State> {
     }
 
     render() {
+
+        const AccentColoredFlatButton = MKButton.coloredButton()
+        .withText(i18n.t('USER.LOG_IN'))
+        .build()
+
         return (
             <View style={styles.container}> 
                 <Text>{i18n.t('USER.EMAIL')}</Text>
@@ -107,10 +117,8 @@ export default class LoginForm extends Component<Props, State> {
                     secureTextEntry={true}
                 />
                 <Text>{this.state.error}</Text>
-                <TouchableHighlight onPress={() => this._submitForm()}>
-                    <Text>{i18n.t('USER.LOG_IN')}</Text>
-                </TouchableHighlight>
-
+                
+                <AccentColoredFlatButton onPress={() => this._submitForm()}/>
             </View>
         )
     }
