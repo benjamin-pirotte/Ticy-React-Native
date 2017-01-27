@@ -58,6 +58,7 @@ export class UserStore extends EventEmitter  {
             MainDispatcher.handleViewAction({
                 type: userConstants._actionError.SERVER_NOT_RESPONDING
             })
+            return
         }
 
         this.emit(ERROR_EVENT, action)

@@ -70,9 +70,6 @@ export default class LoginForm extends Component<Props, State> {
                 case userConstants._actionError.REQUIRED_FIELDS_ARE_MISSING:
                     errorMessage = i18n.t('MAIN.REQUIRED_FIELDS_ARE_MISSING')
                     break;
-                case userConstants._actionError.SERVER_NOT_RESPONDING:
-                    errorMessage = i18n.t('MAIN.SERVER_NOT_RESPONDING')
-                    break;   
                 default:
                     errorMessage = i18n.t('MAIN.UNKNOWN_ERROR')
                     break;
