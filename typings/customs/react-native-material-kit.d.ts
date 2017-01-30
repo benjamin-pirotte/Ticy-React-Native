@@ -55,8 +55,8 @@ declare namespace __MK {
         shadowOpacity?: number
         shadowRadius?: number
         shadowOffset?: {
-            height?: number
-            width?: number
+            height: number
+            width: number
         }
     }
 
@@ -66,14 +66,14 @@ declare namespace __MK {
     }
 
     interface CardTitleStyle {
-        position?: string
+        position?: "absolute" | "relative"
         top?: number
         left?: number
         backgroundColor?: string
         padding?: number
         fontSize?: number
         color?: string
-        fontWeight?: string
+        fontWeight?: "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900"
     }
 
     interface CardContentStyle {
@@ -82,14 +82,14 @@ declare namespace __MK {
     }
     
     interface CardActionStyle {
-        borderStyle?: string
+        borderStyle?: "solid" | "dotted" | "dashed"
         borderTopColor?: string
         borderTopWidth?: number
         padding?: number
     }
     
     interface CardMenuStyle {
-        position?: string
+        position?: "absolute" | "relative"
         top?: number
         right?: number
         backgroundColor?: string
@@ -171,29 +171,37 @@ declare namespace __MK {
     //Button
     interface MKButtonProps extends ReactNative.TouchableWithoutFeedbackProperties, Ripple {}
 
-    interface ButtonClass {
-        withText:(text:String) => ButtonClass
-        withStyle: (Style:Object) => ButtonClass
-        withTextStyle: (Style:Object) => ButtonClass
+    interface MKButtonBuilder {
+        withBackgroundColor:(color:string) => MKButtonBuilder
+        withShadowRadius:(radius:number) => MKButtonBuilder
+        withShadowOffset:(width:number, height:number) => MKButtonBuilder
+        withShadowOpacity:(opacity:number) => MKButtonBuilder
+        withShadowColor:(color:string) => MKButtonBuilder
+        withText:(text:String) => MKButtonBuilder
+        withStyle: (Style:ReactNative.ViewStyle) => MKButtonBuilder
+        withTextStyle: (Style:ReactNative.TextStyle) => MKButtonBuilder
         build: () => ReactNative.ClassicComponentClass<ReactNative.TouchableWithoutFeedbackProperties>
     }
 
-    interface MKButtonStatic extends React.ClassicComponentClass<MKButtonProps> {
-        coloredButton: () => ButtonClass
-        accentColoredButton: () => ReactNative.Component<MKButtonProps, {}>
-        flatButton: () => ReactNative.Component<MKButtonProps, {}>
-        coloredFlatButton: () => ReactNative.Component<MKButtonProps, {}>
-        accentColoredFlatButton: () => ReactNative.Component<MKButtonProps, {}>
-        plainFab: () => ReactNative.Component<MKButtonProps, {}>
-        coloredFab: () => ReactNative.Component<MKButtonProps, {}>
-        accentColoredFab: () => ReactNative.Component<MKButtonProps, {}>
+
+    export interface MKButtonStatic extends React.ClassicComponentClass<MKButtonProps> {
+        Builder: () => MKButtonBuilder
+        button: () => MKButtonBuilder
+        coloredButton: () => MKButtonBuilder
+        accentColoredButton: () => MKButtonBuilder
+        flatButton: () => MKButtonBuilder
+        coloredFlatButton: () => MKButtonBuilder
+        accentColoredFlatButton: () => MKButtonBuilder
+        plainFab: () => MKButtonBuilder
+        coloredFab: () => MKButtonBuilder
+        accentColoredFab: () => MKButtonBuilder
     }
 
     export var MKButton: MKButtonStatic
     export type MKButton = MKButtonStatic
 
     //Text field
-    interface MKTextFieldProps extends ReactNative.TextInput, FloatingLabel {
+    interface MKTextFieldProps extends ReactNative.TextInputProperties, FloatingLabel {
         text?: string 
         onTextChange?: Function 
         password?: Boolean 
@@ -201,11 +209,33 @@ declare namespace __MK {
         underlineSize?: number 
         highlightColor?: string 
         tintColor?: string 
-        textInputStyle?: any 
         additionalInputProps?: any
     }
+    
 
-    interface MKTextFieldStatic extends React.ClassicComponentClass<MKTextFieldProps> {}
+    interface MKTextFieldBuilder {
+        withPassword: (withPassword: boolean) => MKTextFieldBuilder
+        withPlaceholder: (placeholder: string) => MKTextFieldBuilder
+        withDefaultValue: (placeholder: string) => MKTextFieldBuilder
+        withHighlightColor: (color: string) => MKTextFieldBuilder
+        withStyle: (style: React.ViewStyle) => MKTextFieldBuilder
+        withFloatingLabelFont: (StyleMedia: React.TextStyle) => MKTextFieldBuilder
+        withKeyboardType: (Type: "default" | "email-address" | "numeric" | "phone-pad") => MKTextFieldBuilder
+        withTextInputStyle: (style: React.ViewStyle) => MKTextFieldBuilder
+        withOnFocus: (onFocus:Function) => MKTextFieldBuilder
+        withOnBlur: (onBlur:Function) => MKTextFieldBuilder
+        withOnEndEditing: (withOnEndEditing:(event:Event) => void) => MKTextFieldBuilder
+        withOnSubmitEditing: (withOnEndEditing:(event:Event) => void) => MKTextFieldBuilder
+        withOnTextChange: (withOnTextChange:(event:Event) => void) => MKTextFieldBuilder
+        withOnChangeText: (withOnChangeText:(event:Event) => void) => MKTextFieldBuilder
+        build: () => ReactNative.ClassicComponentClass<MKTextFieldProps>
+    }
+
+    interface MKTextFieldStatic extends React.ClassicComponentClass<MKTextFieldProps> {
+        Builder: () => MKTextFieldBuilder
+        textfield: () => MKTextFieldBuilder
+        textfieldWithFloatingLabel: () => MKTextFieldBuilder
+    }
 
     export var MKTextField: MKTextFieldStatic
     export type MKTextField = MKTextFieldStatic
@@ -258,8 +288,16 @@ declare namespace __MK {
         extraRippleRadius?: number
     }
 
+    interface RadioGroup {
+        new(): Array<MKRadioButtonStatitc>
+        add: (btn:MKRadioButtonStatitc) => void
+        onChecked: (btn: MKRadioButtonStatitc, checked: boolean) => void
+    }
+
     interface MKRadioButtonStatitc extends React.ClassicComponentClass<MKRadioButtonProps> {
-        Group: Function
+        Group: {
+            new(): RadioGroup
+        }
     }
 
     export var MKRadioButton: MKRadioButtonStatitc
@@ -276,10 +314,9 @@ declare namespace __MK {
     export var MKIconToggle: MKIconToggleStatitc
     export type MKIconToggle = MKIconToggleStatitc
 
-    //MDL
-    //Loading
-    interface ProgressProps extends ReactNative.ViewProperties  {
-        progress?: number
+    //Progress
+    interface MKProgressProps extends ReactNative.ViewProperties  {
+        progress: number
         buffer?: number
         progressColor?: string
         bufferColor?: string
@@ -287,16 +324,50 @@ declare namespace __MK {
         bufferAniDuration?: number
     }
 
-    interface ProgressStatitc extends React.ClassicComponentClass<ProgressProps> {}
+    interface MKProgressStatitc extends React.ClassicComponentClass<MKProgressProps> {}
 
+    export var MKProgress: MKProgressStatitc
+    export type MKProgress = MKProgressStatitc
+    
     //Spinner
-    interface SpinnerProps extends ReactNative.ViewProperties  {
+    interface MKSpinnerProps extends ReactNative.ViewProperties  {}
+
+    interface MKSpinnerBuilder {
+        withStyle: (Style:ReactNative.ViewStyle) => MKSpinnerBuilder
+        build: () => React.ClassicComponentClass<MKSpinnerProps>
     }
 
-    interface SpinnerStatitc extends React.ClassicComponentClass<SpinnerProps> {}
+    interface MKSpinnerStatitc extends React.ClassicComponentClass<MKSpinnerProps> {
+        Builder: () => MKSpinnerBuilder
+        spinner: () => MKSpinnerBuilder
+        singleColorSpinner: () => MKSpinnerBuilder
+    }
+
+    export var MKSpinner: MKSpinnerStatitc
+    export type MKSpinner = MKSpinnerStatitc
+
+    //Slider
+    interface MKSliderProps extends ReactNative.ViewProperties  {
+        min?: number
+        max?: number
+        value?: number
+        trackSize?: number
+        thumbRadius?: number
+        thumbPadding?: number
+        lowerTrackColor?: string
+        upperTrackColor?: string
+        onChange?: Function
+        onConfirm?: Function
+        step?: number
+    }
+
+    interface MKSliderStatitc extends React.ClassicComponentClass<MKSliderProps> {}
+
+    export var MKSlider: MKSliderStatitc
+    export type MKSlider = MKSliderStatitc
 
     //Range
-    interface RangeProps extends ReactNative.ViewProperties  {
+    interface MKRangeSliderProps extends ReactNative.ViewProperties  {
         min?: number
         max?: number
         minValue?: number
@@ -312,37 +383,12 @@ declare namespace __MK {
         step?: number
     }
 
-    interface RangeStatitc extends React.ClassicComponentClass<RangeProps> {}
+    interface MKRangeSliderStatitc extends React.ClassicComponentClass<MKRangeSliderProps> {}
 
-    //Slider
-    interface SliderProps extends ReactNative.ViewProperties  {
-        min?: number
-        max?: number
-        value?: number
-        trackSize?: number
-        thumbRadius?: number
-        thumbPadding?: number
-        lowerTrackColor?: string
-        upperTrackColor?: string
-        onChange?: Function
-        onConfirm?: Function
-        step?: number
-    }
-
-    interface SliderStatitc extends React.ClassicComponentClass<SliderProps> {}
-
-
-    // MDL Class
-    interface mdlStatic {
-        Progress: ProgressStatitc
-        Spinner: SpinnerStatitc
-        Range: RangeStatitc
-        Slider: SliderStatitc
-    }
-
-    export var mdl: mdlStatic
-    export type mdl = mdlStatic
+    export var MKRangeSlider: MKRangeSliderStatitc
+    export type MKRangeSlider = MKRangeSliderStatitc
 }
+
 
 declare module "react-native-material-kit" {
     export = __MK;

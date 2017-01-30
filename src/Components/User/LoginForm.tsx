@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage, ViewStyle, Route} from "react-native";
-import {MKButton} from "react-native-material-kit"
+import {MKTextField} from "react-native-material-kit"
+import Button from "../../Components/Main/Button"
 
 //Stores
 import UserStore from '../../Stores/User'
@@ -29,6 +30,8 @@ interface State {
 
 //Component
 export default class LoginForm extends Component<Props, State> {
+    radioGroup: Object
+
     constructor(props : Props) {
         super(props)
         this.state = {}
@@ -96,29 +99,25 @@ export default class LoginForm extends Component<Props, State> {
     }
 
     render() {
-
-        const AccentColoredFlatButton = MKButton.coloredButton()
-        .withText(i18n.t('USER.LOG_IN'))
-        .build()
-
         return (
             <View style={styles.container}> 
-                <Text>{i18n.t('USER.EMAIL')}</Text>
-                <TextInput
-                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                <MKTextField
+                    placeholder={i18n.t('USER.EMAIL')}
                     onChangeText={(email) => this._onEmailInputChange(email)}
                     value={this.state.email}
+                    floatingLabelEnabled={true}
+                    allowFontScaling={true}
+                    style={{height: 48}}
                 />
-                <Text>{i18n.t('USER.PASSWORD')}</Text>
-                <TextInput
-                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                <MKTextField
+                    placeholder={i18n.t('USER.PASSWORD')}
                     onChangeText={(password) => this._onPasswordInputChange(password)}
                     value={this.state.password}
-                    secureTextEntry={true}
+                    floatingLabelEnabled={true}
+                    password={true}
                 />
-                <Text>{this.state.error}</Text>
-                
-                <AccentColoredFlatButton onPress={() => this._submitForm()}/>
+                <Text>{this.state.error}</Text>                
+                <Button text={i18n.t('USER.LOG_IN')} onPress={() => this._submitForm()} style="coloredButton" customStyleText={{color:"white"}}/>
             </View>
         )
     }
