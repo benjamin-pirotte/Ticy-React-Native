@@ -12,7 +12,7 @@ export const apiError = {
 }
 
 export const notifcation = {
-    timeOut: 2000
+    timeOut: 10000
 }
 
 export default {

@@ -9,18 +9,21 @@ let _lang:string = 'en_US'
 let _i18n:any = {
     en_US: en_US
 }
+let _defaultLang:string = 'en_US'
 
 function getLocaleLang () {
-  if (React.Platform.OS === 'android') {
-    return NativeModules.I18nManager.localeIdentifier
-  } else {
-    return NativeModules.SettingsManager.settings.AppleLocale
-  }
+    try {
+        if (React.Platform.OS === 'android') {
+            return NativeModules.I18nManager.localeIdentifier
+        } else if (React.Platform.OS === 'ios') {
+            return NativeModules.SettingsManager.settings.AppleLocale
+        } 
+    } catch (error) {
+       return _defaultLang 
+    }
 }
 
 class i18n extends EventEmitter  {
-    defaultLang:string = 'en_US'
-
     constructor(){
         super()
         if(_i18n[getLocaleLang()]){
@@ -55,7 +58,7 @@ class i18n extends EventEmitter  {
         getValFromKey(_lang)
     
         if(!val){
-            getValFromKey(this.defaultLang)
+            getValFromKey(_defaultLang)
         }
 
         if(!val){

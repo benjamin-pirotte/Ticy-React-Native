@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage} from "react-native"
 
 //Dispatcher
-import {MainDispatcher} from '../../Dispatcher/AppDispatcher'
+import AppDispatcher from '../../Dispatcher/AppDispatcher'
 
 // Constants
 import {notifcation, apiError} from '../../Constants/Main'
@@ -32,7 +32,7 @@ export default class Notification extends Component<Props, State> {
     }
 
     componentDidMount = () => {
-        MainDispatcher.register((payload:Payload) => {
+        AppDispatcher.register((payload:Payload) => {
             var action = payload.action  
 
             switch (action.type) {
@@ -56,21 +56,11 @@ export default class Notification extends Component<Props, State> {
 
 
     render() {
-        let notificationStyle = () => {
-            if(this.state.show){
-                return {
-                    opacity: 1
-                }
-            } else {
-                return {
-                    opacity: 0
-                }
-            }
-        }
-
         return (
             <View> 
-                <Text style={notificationStyle()}>{this.state.message}</Text>
+            {this.state.show &&
+                 <Text>{this.state.message}</Text>
+            }
             </View>
         )
     }

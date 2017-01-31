@@ -1,6 +1,6 @@
 import Dispatcher from './Dispatcher'
 
-class AppDispatcher extends Dispatcher {
+export class AppDispatcher extends Dispatcher {
   handleViewAction(action:Object):void {
     this.dispatch({
       source: 'VIEW_ACTION',
@@ -9,6 +9,4 @@ class AppDispatcher extends Dispatcher {
   }
 }
 
-export const MainDispatcher = new AppDispatcher()
-export const UserDispatcher = new AppDispatcher()
-
+export default new AppDispatcher()

@@ -145,7 +145,7 @@ declare namespace __MK {
         floatingLabelEnabled?: Boolean
         floatingLabelAniDuration?: number
         floatingLabelBottomMargin?: number
-        floatingLabelFont?: number
+        floatingLabelFont?: ReactNative.TextStyle
         allowFontScaling?: Boolean
     }
 
@@ -203,13 +203,14 @@ declare namespace __MK {
     //Text field
     interface MKTextFieldProps extends ReactNative.TextInputProperties, FloatingLabel {
         text?: string 
-        onTextChange?: Function 
+        onTextChange?: (value:string) => void
         password?: Boolean 
         underlineEnabled?: Boolean
         underlineSize?: number 
         highlightColor?: string 
         tintColor?: string 
         additionalInputProps?: any
+        textInputStyle?: ReactNative.ViewStyle
     }
     
 
@@ -219,15 +220,14 @@ declare namespace __MK {
         withDefaultValue: (placeholder: string) => MKTextFieldBuilder
         withHighlightColor: (color: string) => MKTextFieldBuilder
         withStyle: (style: React.ViewStyle) => MKTextFieldBuilder
-        withFloatingLabelFont: (StyleMedia: React.TextStyle) => MKTextFieldBuilder
-        withKeyboardType: (Type: "default" | "email-address" | "numeric" | "phone-pad") => MKTextFieldBuilder
+        withFloatingLabelFont: (style: React.TextStyle) => MKTextFieldBuilder
+        withKeyboardType: (type: ReactNative.KeyboardType) => MKTextFieldBuilder
         withTextInputStyle: (style: React.ViewStyle) => MKTextFieldBuilder
         withOnFocus: (onFocus:Function) => MKTextFieldBuilder
         withOnBlur: (onBlur:Function) => MKTextFieldBuilder
         withOnEndEditing: (withOnEndEditing:(event:Event) => void) => MKTextFieldBuilder
         withOnSubmitEditing: (withOnEndEditing:(event:Event) => void) => MKTextFieldBuilder
-        withOnTextChange: (withOnTextChange:(event:Event) => void) => MKTextFieldBuilder
-        withOnChangeText: (withOnChangeText:(event:Event) => void) => MKTextFieldBuilder
+        withOnTextChange: (withOnTextChange:(value:String) => void) => MKTextFieldBuilder
         build: () => ReactNative.ClassicComponentClass<MKTextFieldProps>
     }
 

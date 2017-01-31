@@ -6,13 +6,13 @@ import {MKButton, MKButtonBuilder} from "react-native-material-kit"
 interface Props {
     onPress:Function
     text: string
-    style?:
+    preset?:
     "plainButton" | "coloredButton" | 
     "accentColoredButton" | "flatButton" | 
     "coloredFlatButton" | "accentColoredFlatButton" |
     "plainFab" | "coloredFab" | "accentColoredFab"
-    customStyle?:ViewStyle
-    customStyleText?:TextStyle
+    style?:ViewStyle
+    styleText?:TextStyle
 }
 
 interface State {  
@@ -27,7 +27,7 @@ export default class Button extends Component<Props, State> {
     render() {
         let Builder:MKButtonBuilder
 
-        switch (this.props.style) {
+        switch (this.props.preset) {
             case "coloredButton":
                 Builder = MKButton.coloredButton()
                 break;
@@ -58,8 +58,8 @@ export default class Button extends Component<Props, State> {
         }
         
         let Button = Builder.withText(this.props.text.toUpperCase())
-                            .withStyle(this.props.customStyle)
-                            .withTextStyle(this.props.customStyleText)
+                            .withStyle(this.props.style)
+                            .withTextStyle(Object.assign({}, {color:'white'}, this.props.styleText))
                             .build()       
 
         return (

@@ -2,14 +2,14 @@ import { EventEmitter } from 'events'
 import { AsyncStorage } from "react-native";  
 
 //Dispatcher
-import {UserDispatcher, MainDispatcher} from '../Dispatcher/AppDispatcher'
+import AppDispatcher from '../Dispatcher/AppDispatcher'
 
 //Constants
 import userConstants from '../Constants/User' 
 
 //Interfaces
 import { User, NewUser } from '../Interfaces/User'
-import { Action, Payload } from '../Interfaces/Dispatcher'
+import {Dispatcher, Action, Payload } from '../Interfaces/Dispatcher'
 
 //Store
 let CHANGE_EVENT = 'user_change'; 
@@ -54,13 +54,6 @@ export class UserStore extends EventEmitter  {
     }
 
     emitError = (action?:Action) => {
-        if(action.data === userConstants._actionError.SERVER_NOT_RESPONDING){
-            MainDispatcher.handleViewAction({
-                type: userConstants._actionError.SERVER_NOT_RESPONDING
-            })
-            return
-        }
-
         this.emit(ERROR_EVENT, action)
     }
 
@@ -72,8 +65,16 @@ export class UserStore extends EventEmitter  {
         this.removeListener(ERROR_EVENT, callback)
     }
 
-    dispatcherIndex = UserDispatcher.register((payload:Payload) => {
+    dispatcherIndex = AppDispatcher.register((payload:Payload) => {
             var action = payload.action
+
+            if(action.data === userConstants._actionError.SERVER_NOT_RESPONDING){
+                AppDispatcher.handleViewAction({
+                    type: userConstants._actionError.SERVER_NOT_RESPONDING
+                })
+                return
+            }
+
             switch(action.type) {
                 case userConstants._action.LOGIN:
                         this.updateUser(action.data)

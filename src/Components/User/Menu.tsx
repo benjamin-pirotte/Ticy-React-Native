@@ -7,7 +7,7 @@ import i18n from '../../Services/i18n'
 //Components
 import EditForm from './EditForm'
 import LogOut from './LogOut'
-import NavigationBar from '../Main/navigationBar'
+import NavigationBar from '../Main/NavigationBar'
 
 //Interfaces
 

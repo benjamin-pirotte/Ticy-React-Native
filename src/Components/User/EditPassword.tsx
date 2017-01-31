@@ -25,7 +25,7 @@ interface State {
     oldPassword?:string
     password?:string
     passwordCopy?:string
-    error?:string
+    error?:string 
 }
 
 //Component

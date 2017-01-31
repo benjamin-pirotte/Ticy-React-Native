@@ -84,7 +84,6 @@ export default class Main extends Component<Props, State> {
         } else {
             view = <Login hasBeenDisconnected={this.state.hasBeenDisconnected} />
         }
-
         return (
             <View style={{flex:1}}> 
                 {view}

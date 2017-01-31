@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, TextInput, Text, TouchableHighlight, AsyncStorage, ViewStyle, Route} from "react-native";
-import {MKTextField} from "react-native-material-kit"
+import TextField from "../../Components/Main/TextField"
 import Button from "../../Components/Main/Button"
 
 //Stores
@@ -30,22 +30,21 @@ interface State {
 
 //Component
 export default class LoginForm extends Component<Props, State> {
-    radioGroup: Object
-
     constructor(props : Props) {
         super(props)
         this.state = {}
-    }
 
-    componentDidMount = () => {
-        UserStore.addErrorListener(this._onFormError)
         AsyncStorage.getItem('USER_EMAIL', (err, result) => {
             if(result){
                 this.setState({
                     email: result.toLowerCase().trim()
-                }) 
+                })
             }
         })
+    }
+
+    componentDidMount = () => {
+        UserStore.addErrorListener(this._onFormError)
     }
 
     componentWillUnmount = () => {
@@ -56,7 +55,7 @@ export default class LoginForm extends Component<Props, State> {
     _onEmailInputChange = (value:string) => {
         this.setState({
             email: value.toLowerCase().trim()
-        })       
+        })
     }
 
     _onPasswordInputChange = (value:string) => {
@@ -101,23 +100,22 @@ export default class LoginForm extends Component<Props, State> {
     render() {
         return (
             <View style={styles.container}> 
-                <MKTextField
+                <TextField
                     placeholder={i18n.t('USER.EMAIL')}
-                    onChangeText={(email) => this._onEmailInputChange(email)}
-                    value={this.state.email}
+                    onTextChange={this._onEmailInputChange}
                     floatingLabelEnabled={true}
+                    defaultValue={this.state.email}
                     allowFontScaling={true}
                     style={{height: 48}}
                 />
-                <MKTextField
+                <TextField
                     placeholder={i18n.t('USER.PASSWORD')}
-                    onChangeText={(password) => this._onPasswordInputChange(password)}
-                    value={this.state.password}
+                    onTextChange={this._onPasswordInputChange}
                     floatingLabelEnabled={true}
                     password={true}
                 />
                 <Text>{this.state.error}</Text>                
-                <Button text={i18n.t('USER.LOG_IN')} onPress={() => this._submitForm()} style="coloredButton" customStyleText={{color:"white"}}/>
+                <Button text={i18n.t('USER.LOG_IN')} onPress={() => this._submitForm()} preset="coloredButton"/>
             </View>
         )
     }
