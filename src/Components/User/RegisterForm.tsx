@@ -42,7 +42,7 @@ export default class RegisterForm extends Component<Props, State> {
     }
 
     // On change
-    _onEmailInputChange = function(value:string){
+    _onEmailInputChange = (value:string) => {
         let user = this.state.user
         user.email = value.toLowerCase().trim()
         this.setState({
@@ -50,7 +50,7 @@ export default class RegisterForm extends Component<Props, State> {
         })   
     }
 
-    _onPasswordInputChange = function(value:string) {
+    _onPasswordInputChange = (value:string) => {
         let user = this.state.user
         user.password = value
         this.setState({
@@ -58,7 +58,7 @@ export default class RegisterForm extends Component<Props, State> {
         })   
     }
 
-    _onPasswordCopyInputChange = function(value:string) {
+    _onPasswordCopyInputChange = (value:string) => {
         let user = this.state.user
         user.passwordCopy = value
         this.setState({
@@ -66,7 +66,7 @@ export default class RegisterForm extends Component<Props, State> {
         })   
     }
 
-    _onFirstNameInputChange = function(value:string) {
+    _onFirstNameInputChange = (value:string) => {
         let user = this.state.user
         user.firstName = value
         this.setState({
@@ -74,7 +74,7 @@ export default class RegisterForm extends Component<Props, State> {
         })       
     }
 
-    _onLastNameInputChange = function(value:string) {
+    _onLastNameInputChange = (value:string) => {
         let user = this.state.user
         user.lastName = value
         this.setState({
@@ -82,7 +82,7 @@ export default class RegisterForm extends Component<Props, State> {
         })   
     }
 
-    _onAgeInputChange = function(value:string) {
+    _onAgeInputChange = (value:string) => {
         let user = this.state.user
         user.age = parseInt(value)
         this.setState({
@@ -124,7 +124,7 @@ export default class RegisterForm extends Component<Props, State> {
     }
 
     // On submit
-    _submitForm = function(){
+    _submitForm = () => {
         let user = this.state.user
         let newUser:NewUser = {
             email: user.email, 

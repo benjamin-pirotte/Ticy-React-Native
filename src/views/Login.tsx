@@ -41,7 +41,7 @@ export default class Login extends Component<Props, State> {
 
     navigator:Navigator
 
-    navigatorRenderScene = (route:Route, navigator:NavigatorStatic) => {
+    navigatorRenderScene(route:Route, navigator:NavigatorStatic) {
         switch (route.id) {
             case 'login':
                 return <View  style={{flex:2}}>

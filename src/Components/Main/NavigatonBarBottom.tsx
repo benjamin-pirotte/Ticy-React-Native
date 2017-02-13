@@ -16,7 +16,7 @@ export default class NavigatonBarBottom extends Component<Props, State> {
         super(props)
     }
 
-    _navigate = function(index:number) {
+    _navigate(index:number) {
         this.props.navigator.replace(this.props.routes[index])
     }
 

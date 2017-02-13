@@ -14,9 +14,8 @@ interface Props {
     style?:ViewStyle
     styleText?:TextStyle
 }
-
+ 
 interface State {}
-
 
 //Component
 export default class Button extends Component<Props, State> {

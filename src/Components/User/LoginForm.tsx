@@ -52,13 +52,13 @@ export default class LoginForm extends Component<Props, State> {
     }
 
     // On change
-    _onEmailInputChange = function(value:string) {
+    _onEmailInputChange = (value:string) => {
         this.setState({
             email: value.toLowerCase().trim()
         })
     }
 
-    _onPasswordInputChange = function(value:string) {
+    _onPasswordInputChange = (value:string) => {
         this.setState({
             password: value
         }) 

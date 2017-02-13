@@ -30,7 +30,7 @@ export default class Home extends Component<Props, State> {
 
     navigator:Navigator
 
-    navigatorRenderScene = function(route:Route, navigator:NavigatorStatic) {
+    navigatorRenderScene(route:Route, navigator:NavigatorStatic) {
         switch (route.id) {
             case 'screen0':
                 return <View style={{flex:1}}>

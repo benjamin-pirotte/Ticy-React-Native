@@ -48,26 +48,26 @@ export default class EditPassword extends Component<Props, State> {
     }
 
     // On change
-    _onPasswordChange = function(value:string) {
+    _onPasswordChange =(value:string) => {
         this.setState({
             oldPassword: value
         })  
     }
 
-    _onNewPasswordChange = function(value:string) {
+    _onNewPasswordChange = (value:string) => {
         this.setState({
             password: value
         })  
     }
 
-    _onNewPasswordCopyChange = function(value:string) {
+    _onNewPasswordCopyChange = (value:string) => {
         this.setState({
             passwordCopy: value
         })  
     }
 
     // On form error
-    _onFormError = function(action:Action) {
+    _onFormError = (action:Action) => {
         console.log(action)
         if(action.type === userConstants._action.ERROR_EDIT_PASSWORD){
             let errorMessage: string
@@ -92,7 +92,6 @@ export default class EditPassword extends Component<Props, State> {
                     errorMessage = i18n.t('MAIN.UNKNOWN_ERROR')
                     break;
             }
-            console.log(errorMessage)
             this.setState({
                 error: errorMessage
             })   
@@ -101,7 +100,7 @@ export default class EditPassword extends Component<Props, State> {
     
     
     // On submit
-    _submitForm = function() {
+    _submitForm = () => {
         UserAction.editPassword(this.state.oldPassword, this.state.password, this.state.passwordCopy)
         this.setState({
             error: ''

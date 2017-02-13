@@ -55,7 +55,7 @@ export default class EditForm extends Component<Props, State> {
     
     
     // On change
-    _onUserChange = function() { 
+    _onUserChange = () => { 
         if(this.state.editPasswordModal) {
             this.setState({
                 editPasswordModal: false
@@ -63,7 +63,7 @@ export default class EditForm extends Component<Props, State> {
         }
     }
 
-    _onEmailInputChange = function(value:string) {
+    _onEmailInputChange = (value:string) => {
         let user = this.state.user
         user.email = value.toLowerCase().trim()
         this.setState({
@@ -73,7 +73,7 @@ export default class EditForm extends Component<Props, State> {
         this._submitForm()
     }
 
-    _onFirstNameInputChange = function(value:string) {
+    _onFirstNameInputChange = (value:string) => {
         let user = this.state.user
         user.firstName = value
         this.setState({
@@ -83,7 +83,7 @@ export default class EditForm extends Component<Props, State> {
         this._submitForm()
     }
 
-    _onLastNameInputChange = function(value:string) {
+    _onLastNameInputChange = (value:string) => {
         let user = this.state.user
         user.lastName = value
         this.setState({
@@ -93,7 +93,7 @@ export default class EditForm extends Component<Props, State> {
         this._submitForm()
     }
 
-    _onAgeInputChange = function(value:string) {
+    _onAgeInputChange = (value:string)  => {
         let user = this.state.user
         user.age = parseInt(value)
         this.setState({
@@ -104,7 +104,7 @@ export default class EditForm extends Component<Props, State> {
     }
 
     // On form error
-    _onFormError = function(action:Action) {
+    _onFormError = (action:Action) => {
         if(action.type === userConstants._action.ERROR_EDIT){
             let errorMessage: string
             switch (action.data) {
@@ -137,7 +137,7 @@ export default class EditForm extends Component<Props, State> {
     // On submit
     submitTimout:any
     
-    _submitForm = function() {
+    _submitForm = () => {
         clearTimeout(this.submitTimout)
         this.submitTimout = setTimeout(() => {
             let user:User = {
@@ -155,13 +155,13 @@ export default class EditForm extends Component<Props, State> {
     }
 
     // Modal
-    _onOrientationchange = function(event:any) {
+    _onOrientationchange = (event:any) => {
        this.setState({
            currentOrientation:  event.nativeEvent.orientation
         })
     }
 
-    _togglePasswordModal = function() {
+    _togglePasswordModal = () => {
         this.setState({
            editPasswordModal: !this.state.editPasswordModal
         })

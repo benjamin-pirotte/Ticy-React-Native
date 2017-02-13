@@ -16,7 +16,7 @@ export default class NavigatonBar extends Component<Props, State> {
         super(props)
     }
 
-    _navigate = function(index:number) {
+    _navigate(index:number) {
         this.props.navigator.pop()
     }
 

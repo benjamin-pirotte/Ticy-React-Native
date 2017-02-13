@@ -210,7 +210,7 @@ declare namespace __MK {
         highlightColor?: string 
         tintColor?: string 
         additionalInputProps?: any
-        textInputStyle?: ReactNative.ViewStyle
+        textInputStyle?: ReactNative.ViewStyle 
     }
     
 

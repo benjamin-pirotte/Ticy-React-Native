@@ -53,7 +53,7 @@ export class UserStore extends EventEmitter  {
         this.removeListener(CHANGE_EVENT, callback)
     }
 
-    emitError = (action?:Action) => {
+    emitError(action?:Action) {
         this.emit(ERROR_EVENT, action)
     }
 

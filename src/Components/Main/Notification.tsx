@@ -31,7 +31,7 @@ export default class Notification extends Component<Props, State> {
         }
     }
 
-    componentDidMount= function() {
+    componentDidMount() {
         AppDispatcher.register((payload:Payload) => {
             var action = payload.action  
 

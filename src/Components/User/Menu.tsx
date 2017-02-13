@@ -26,7 +26,7 @@ export default class UserMenu extends Component<Props, State> {
 
     navigator:Navigator
 
-    navigatorRenderScene = function(route:Route, navigator:NavigatorStatic){
+    navigatorRenderScene(route:Route, navigator:NavigatorStatic){
         switch (route.id) {
             case 'home' : 
                 return <View> 
@@ -45,7 +45,7 @@ export default class UserMenu extends Component<Props, State> {
         {id: 'edit', title: i18n.t('USER.EDIT')}
     ];
 
-    _navigate = (index:number) => {
+    _navigate(index:number) {
         this.navigator.push(this.navigatorRoutes[index])
     }
 
