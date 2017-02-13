@@ -31,15 +31,15 @@ class i18n extends EventEmitter  {
         }
     }
 
-    switchLang = (lang:string) =>  {
+    switchLang = function(lang:string)  {
         _lang = lang
     }
 
-    getLang = () => {
+    getLang = function() {
         return _lang
     }
 
-    t = (key:string) => {
+    t = function(key:string) {
         let keyArray:Array<string> = key.split('.')
         let val:any
 

@@ -17,18 +17,18 @@ let ERROR_EVENT = 'user_error_change';
 let _user:User = {}
 
 export class UserStore extends EventEmitter  {
-    updateUser = (user:User) => {
+    updateUser = function(user:User) {
         _user = user
         AsyncStorage.setItem('USER_API_KEY', _user.apiKey)
         AsyncStorage.setItem('USER_EMAIL', _user.email)
     }   
 
-    updateUserApiKey = (apiKey:string) => {
+    updateUserApiKey = function(apiKey:string) {
         _user.apiKey = apiKey
         AsyncStorage.setItem('USER_API_KEY', _user.apiKey)
     }  
 
-    getUser = ():User => {
+    getUser = function():User {
         return _user
     }
 
@@ -36,12 +36,12 @@ export class UserStore extends EventEmitter  {
         _user = {}
     }
 
-    clearUserApi = () => {
+    clearUserApi = function() {
         AsyncStorage.removeItem('USER_API_KEY')
     }
 
     // Event management
-    emitChange = () => {
+    emitChange = function() {
         this.emit(CHANGE_EVENT)
     }
 

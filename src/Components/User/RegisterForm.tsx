@@ -33,16 +33,16 @@ export default class RegisterForm extends Component<Props, State> {
         }
     }
     
-    componentDidMount = () => {
+    componentDidMount() {
         UserStore.addErrorListener(this._onFormError)
     }
 
-    componentWillUnmount = () => {
+    componentWillUnmount() {
         UserStore.removeErrorListener(this._onFormError)
     }
 
     // On change
-    _onEmailInputChange = (value:string) =>{
+    _onEmailInputChange = function(value:string){
         let user = this.state.user
         user.email = value.toLowerCase().trim()
         this.setState({
@@ -50,7 +50,7 @@ export default class RegisterForm extends Component<Props, State> {
         })   
     }
 
-    _onPasswordInputChange = (value:string) => {
+    _onPasswordInputChange = function(value:string) {
         let user = this.state.user
         user.password = value
         this.setState({
@@ -58,7 +58,7 @@ export default class RegisterForm extends Component<Props, State> {
         })   
     }
 
-    _onPasswordCopyInputChange = (value:string) => {
+    _onPasswordCopyInputChange = function(value:string) {
         let user = this.state.user
         user.passwordCopy = value
         this.setState({
@@ -66,7 +66,7 @@ export default class RegisterForm extends Component<Props, State> {
         })   
     }
 
-    _onFirstNameInputChange = (value:string) => {
+    _onFirstNameInputChange = function(value:string) {
         let user = this.state.user
         user.firstName = value
         this.setState({
@@ -74,7 +74,7 @@ export default class RegisterForm extends Component<Props, State> {
         })       
     }
 
-    _onLastNameInputChange = (value:string) => {
+    _onLastNameInputChange = function(value:string) {
         let user = this.state.user
         user.lastName = value
         this.setState({
@@ -82,7 +82,7 @@ export default class RegisterForm extends Component<Props, State> {
         })   
     }
 
-    _onAgeInputChange = (value:string) => {
+    _onAgeInputChange = function(value:string) {
         let user = this.state.user
         user.age = parseInt(value)
         this.setState({
@@ -124,7 +124,7 @@ export default class RegisterForm extends Component<Props, State> {
     }
 
     // On submit
-    _submitForm = () => {
+    _submitForm = function(){
         let user = this.state.user
         let newUser:NewUser = {
             email: user.email, 

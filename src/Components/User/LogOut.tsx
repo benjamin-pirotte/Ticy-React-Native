@@ -27,7 +27,7 @@ export default class LogOut extends Component<Props, State> {
     }
 
     // On submit
-    _onLogOut = () => {
+    _onLogOut = function() {
         let component = this
         UserAction.logOut()
     }

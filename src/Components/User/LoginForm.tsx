@@ -43,29 +43,29 @@ export default class LoginForm extends Component<Props, State> {
         })
     }
 
-    componentDidMount = () => {
+    componentDidMount() {
         UserStore.addErrorListener(this._onFormError)
     }
 
-    componentWillUnmount = () => {
+    componentWillUnmount() {
         UserStore.removeErrorListener(this._onFormError)
     }
 
     // On change
-    _onEmailInputChange = (value:string) => {
+    _onEmailInputChange = function(value:string) {
         this.setState({
             email: value.toLowerCase().trim()
         })
     }
 
-    _onPasswordInputChange = (value:string) => {
+    _onPasswordInputChange = function(value:string) {
         this.setState({
             password: value
         }) 
     }
 
     // On form error
-    _onFormError = (action:Action) => {
+    _onFormError = function(action:Action) {
         if(action.type === userConstants._action.ERROR_LOGIN){
             let errorMessage: string
             switch (action.data) {
@@ -86,7 +86,7 @@ export default class LoginForm extends Component<Props, State> {
     }
 
     // On submit
-    _submitForm = () => {
+    _submitForm = function() {
         if(this.state.email){
             AsyncStorage.setItem('USER_EMAIL', this.state.email)
         }

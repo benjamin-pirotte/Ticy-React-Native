@@ -26,7 +26,7 @@ export default class UserMenu extends Component<Props, State> {
 
     navigator:Navigator
 
-    navigatorRenderScene = (route:Route, navigator:NavigatorStatic) => {
+    navigatorRenderScene = function(route:Route, navigator:NavigatorStatic){
         switch (route.id) {
             case 'home' : 
                 return <View> 

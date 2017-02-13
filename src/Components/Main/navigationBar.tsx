@@ -8,8 +8,7 @@ interface Props {
     routes: Array<Object>
 }
 
-interface State {  
-}
+interface State {}
 
 //Component
 export default class NavigatonBar extends Component<Props, State> {
@@ -17,7 +16,7 @@ export default class NavigatonBar extends Component<Props, State> {
         super(props)
     }
 
-    _navigate = (index:number) => {
+    _navigate = function(index:number) {
         this.props.navigator.pop()
     }
 

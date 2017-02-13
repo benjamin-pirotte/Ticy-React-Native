@@ -39,40 +39,35 @@ export default class EditPassword extends Component<Props, State> {
         }
     }
 
-    componentDidMount = () => {
-        UserStore.addChangeListener(this._onUserChange)
+    componentDidMount() {
         UserStore.addErrorListener(this._onFormError)
     }
 
-    componentWillUnmount = () => {
-        UserStore.removeChangeListener(() => this._onUserChange)
+    componentWillUnmount() {
         UserStore.removeErrorListener(() => this._onFormError)
     }
 
     // On change
-    _onUserChange = () => {
-    }
-
-    _onPasswordChange = (value:string) => {
+    _onPasswordChange = function(value:string) {
         this.setState({
             oldPassword: value
         })  
     }
 
-    _onNewPasswordChange = (value:string) => {
+    _onNewPasswordChange = function(value:string) {
         this.setState({
             password: value
         })  
     }
 
-    _onNewPasswordCopyChange = (value:string) => {
+    _onNewPasswordCopyChange = function(value:string) {
         this.setState({
             passwordCopy: value
         })  
     }
 
     // On form error
-    _onFormError = (action:Action) => {
+    _onFormError = function(action:Action) {
         console.log(action)
         if(action.type === userConstants._action.ERROR_EDIT_PASSWORD){
             let errorMessage: string
@@ -106,7 +101,7 @@ export default class EditPassword extends Component<Props, State> {
     
     
     // On submit
-    _submitForm = () => {
+    _submitForm = function() {
         UserAction.editPassword(this.state.oldPassword, this.state.password, this.state.passwordCopy)
         this.setState({
             error: ''

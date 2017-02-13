@@ -45,15 +45,15 @@ export default class Main extends Component<Props, State> {
         }
     }
 
-    componentDidMount = () => {
+    componentDidMount = function() {
         UserStore.addChangeListener(this._onUserChange)
     }
 
-    componentWillUnmount = () => {
+    componentWillUnmount = function() {
         UserStore.removeChangeListener(this._onUserChange)
     }
 
-    _onUserChange = (event:Event) =>{
+    _onUserChange = function(event:Event) {
         let isLoading:boolean = false
         let userIsLogged:boolean = false
         let user:User = UserStore.getUser()  

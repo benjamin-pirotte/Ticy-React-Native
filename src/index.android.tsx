@@ -7,11 +7,7 @@ interface Props {
 
 }
 
-interface State {
-
-}
-
-export default class App extends Component<Props, State> {
+export default class App extends Component<Props, {}> {
     render() { 
         return (
             <View style={{flex: 1}}>
