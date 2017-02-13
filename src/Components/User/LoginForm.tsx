@@ -65,7 +65,7 @@ export default class LoginForm extends Component<Props, State> {
     }
 
     // On form error
-    _onFormError = function(action:Action) {
+    _onFormError = (action:Action) => {
         if(action.type === userConstants._action.ERROR_LOGIN){
             let errorMessage: string
             switch (action.data) {
@@ -86,7 +86,7 @@ export default class LoginForm extends Component<Props, State> {
     }
 
     // On submit
-    _submitForm = function() {
+    _submitForm = () => {
         if(this.state.email){
             AsyncStorage.setItem('USER_EMAIL', this.state.email)
         }
